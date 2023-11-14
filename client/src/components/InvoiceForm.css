@@ -1,0 +1,16 @@
+table {
+    table-layout: fixed;
+}
+
+td {
+    word-break: break-all;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus, .show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow: none!important;
+}
+
+.btn:focus {
+    outline: 0;
+    box-shadow: none!important;
+}
