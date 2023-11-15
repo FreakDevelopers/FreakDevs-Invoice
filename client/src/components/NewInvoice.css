@@ -1,0 +1,308 @@
+/* Utility */
+.invoice_container {
+  padding: 1rem 2rem;
+}
+
+.btn-custom {
+  display: inline-block;
+  padding: 0.4rem 1.4rem;
+  margin-top: 1rem;
+  margin-left: 2rem;
+  color: #fff;
+  background: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-red{
+  color: #fff;
+  background: #575757;
+}
+
+.btn-custom:hover {
+  color: #000;
+  background: #fff;
+  outline: #000 solid 1px;
+}
+
+hr {
+  margin: 0rem 2rem !important;
+}
+
+/* Header */
+.invoice_container > .header > p {
+  text-align: center;
+  margin: 0.2rem 0;
+  font-size: 1.8rem;
+}
+
+.invoice_container > .header > .h-line {
+  border: black solid 0.14rem;
+}
+
+/* Section-1 */
+.invoice_container > .section-1 {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1.8rem 2rem 0rem 2rem;
+}
+
+.invoice_container > .section-1 > .company_logo {
+  padding-top: 0.5rem;
+}
+
+.invoice_container > .section-1 > .company_logo > .logo {
+  height: 60px;
+  width: 60px;
+}
+
+.invoice_container > .section-1 > .company_info {
+  padding-left: 1.8rem;
+}
+
+.invoice_container > .section-1 > .company_info > p {
+  letter-spacing: 1px;
+  line-height: 1.7;
+  font-size: 0.6rem;
+  margin: 0;
+}
+
+.invoice_container > .section-1 > .company_info > p > b {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1.7;
+}
+
+.invoice_container > .section-1 > .invoice_no {
+  margin-left: auto;
+  text-align: end;
+}
+
+.invoice_container > .section-1 > .invoice_no > p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+}
+
+.invoice_container > .section-1 > .invoice_no b {
+  letter-spacing: 1px;
+  font-size: 0.6rem;
+  line-height: 1.7;
+}
+
+/* Section-2 */
+.invoice_container > .section-2 {
+  padding: 1rem 2rem;
+}
+
+.invoice_container > .section-2 > .customer_info > p {
+  font-size: 0.6rem;
+  line-height: 1.7;
+  word-wrap: break-word;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.invoice_container > .section-2 > .customer_info > p > b {
+  font-size: 0.8rem;
+  line-height: 1.7;
+  word-wrap: break-word;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* Section-3 */
+.invoice_container > .section-3 {
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  padding: 0.2rem 2rem 1.4rem 2rem;
+}
+
+.invoice_container > .section-3 > .items_desk > table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice_container > .section-3 > .items_desk > table th,
+.invoice_container > .section-3 > .items_desk > table td {
+  vertical-align: top;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-align: left;
+  padding: 0.8rem 0 !important;
+  word-break: break-word;
+  word-wrap: break-word;
+}
+
+.invoice_container > .section-3 > .items_desk > table th {
+  border-bottom: 1px solid rgba(0, 0, 0);
+}
+
+.invoice_container > .section-3 > .items_desk > table td {
+  padding: 1rem 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(1),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(1) {
+  text-align: center;
+  width: 6%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(2),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(2) {
+  width: 62%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(3),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(3),
+.invoice_container > .section-3 > .items_desk > table th:nth-child(4),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(4) {
+  text-align: center;
+  width: 10%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(5),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(5) {
+  text-align: center;
+  min-width: 12%;
+}
+
+.invoice_container > .section-3 > .items_desk > table tbody tr:last-child td {
+  border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+}
+
+/* Items Total */
+.invoice_container > .section-3 > .items_total {
+  width: 50%;
+  align-self: flex-end;
+}
+
+.invoice_container > .section-3 > .items_total > .total {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  border-bottom: #000 solid 1px;
+}
+
+.invoice_container > .section-3 > .items_total > .total p {
+  word-wrap: break-word;
+  margin: 0;
+  padding: 0.6rem 0;
+}
+
+.invoice_container > .section-3 > .items_total > .total > .w-76 p {
+  margin-left: 2rem;
+}
+
+.invoice_container > .section-3 > .items_total > .total > .w-76 {
+  width: 76%;
+  text-align: left;
+}
+.invoice_container > .section-3 > .items_total > .total > .w-24 {
+  width: 24%;
+  text-align: center;
+}
+
+/* Section-4 */
+.invoice_container .section-4 {
+  padding: 0.2rem 2rem 1.4rem 2rem;
+}
+
+.section-4 b {
+  font-size: 0.6rem;
+  line-height: 2.5;
+  letter-spacing: 1px;
+}
+.section-4 p {
+  font-size: 0.6rem;
+  line-height: 1.7;
+  word-wrap: break-word;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 480px) {
+  .invoice_container {
+    padding: 1rem 1rem;
+  }
+
+  hr {
+    margin: 0rem 1rem !important;
+  }
+
+  /* Section-2 */
+  .invoice_container > .section-1 {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1.8rem 1rem 0rem 1rem;
+  }
+
+  .invoice_container > .section-1 > .company_logo > .logo {
+    height: 50px;
+    width: 50px;
+  }
+
+  .invoice_container > .section-1 > .company_info {
+    padding-left: 1rem;
+  }
+
+  /* Section-2 */
+  .invoice_container > .section-2 {
+    padding: 1rem;
+  }
+
+/* Section-3 */
+.invoice_container > .section-3 {
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  padding: 0.2rem 1rem 1.4rem 1rem;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(1),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(1) {
+  text-align: center;
+  width: 10%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(2),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(2) {
+  width: 45%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(3),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(3),
+.invoice_container > .section-3 > .items_desk > table th:nth-child(4),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(4) {
+  text-align: center;
+  width: 15%;
+}
+
+.invoice_container > .section-3 > .items_desk > table th:nth-child(5),
+.invoice_container > .section-3 > .items_desk > table td:nth-child(5) {
+  text-align: center;
+  min-width: 15%;
+}
+
+.invoice_container > .section-3 > .items_total > .total > .w-76 p {
+  margin-left: 1rem;
+}
+
+/* Section-4 */
+.invoice_container .section-4 {
+  padding: 0.2rem 1rem 1.4rem 1rem;
+}
+
+.btn-custom{
+  margin-left: 1rem;
+}
+}

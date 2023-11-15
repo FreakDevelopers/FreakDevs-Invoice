@@ -5,7 +5,6 @@ function Invoice() {
     const saveInvoiceDataHandler = (enteredInvoiceData) => {
         const invoiceData = {
           ...enteredInvoiceData,
-          id: (Math.trunc(Math.random()*100)).toString()
         }
         console.log(invoiceData);
       }

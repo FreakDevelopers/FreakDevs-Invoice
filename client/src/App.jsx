@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import MasterLayout from './layouts/MasterLayout'
 import Invioce from './components/Invoice'
+import NewInvoice from "./components/NewInvoice";
 
 function App() {
 
@@ -11,7 +12,7 @@ function App() {
       element: <MasterLayout />,
       children: [
         {path:'/', element: <Invioce />},
-        {path:'/invoice', element: <Invioce />},
+        {path:'/invoice', element: <NewInvoice />},
       ]
     }
   ]);

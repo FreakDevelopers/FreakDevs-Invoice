@@ -1,18 +1,23 @@
-const express = require('express');
+import express from 'express'
+import { config } from 'dotenv';
 const app = express();
+
+
 
 //database connection
 // mongoose.connect(process.env.MONGO_URL)
 //     .then(() => console.log("Database Connected..!"))
 //     .catch((err) => console.log("Database Not Connected..!", err))
 
-//middleware
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(express.urlencoded({ extended: false }));
-
 // app.use('/', require('./routes/authRoutes'))
 
-const port = 8000;
+app.get('/', (req, res) => {
+    res.send('Home')
+})
 
-app.listen(port, () => console.log(`Server is Running on ${port}`))
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Server is Running on http://localhost:${port}`)
+}
+);
