@@ -73,15 +73,15 @@ function NewInvoice() {
                 <td>2</td>
                 <td>Domain</td>
                 <td>₹1000</td>
-                <td>2</td>
-                <td>₹2000</td>
+                <td>1</td>
+                <td>₹1000</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Website</td>
-                <td>₹2000</td>
+                <td>15000</td>
                 <td>1</td>
-                <td>₹2000</td>
+                <td>15000</td>
               </tr>
             </tbody>
           </table>

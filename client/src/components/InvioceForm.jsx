@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 import "./InvoiceForm.css";
 
 function InvoiceForm(props) {
@@ -74,7 +75,7 @@ function InvoiceForm(props) {
 
   const addItemHandler = () => {
     console.log("addItemHandler Clicked..");
-    toast.success("Hello");
+    toast.success("Item Added..!");
   };
 
   const submitHandler = (event) => {
@@ -122,11 +123,10 @@ function InvoiceForm(props) {
 
   return (
     <div className="container">
+      <Toaster position="top-right" reverseOrder={false} />
       <form className="row mt-2 g-3" onSubmit={submitHandler}>
-        <Toaster position="bottom-right" reverseOrder={false} />
-
         <h6>BILL TO:</h6>
-        
+
         <div className="col-md-4 col-sm-12 col-sm-12">
           <label htmlFor="inputName" className="form-label">
             Customer Name
@@ -174,7 +174,7 @@ function InvoiceForm(props) {
             value={customerMobile}
           />
         </div>
-        
+
         <div className="col-12">
           <label htmlFor="inputAddress" className="form-label">
             Address Line 1
@@ -260,6 +260,7 @@ function InvoiceForm(props) {
           />
         </div>
 
+        {/* Item Details Table */}
         <div className="col-md-12 mt-5">
           <h6>ITEM DETAILS:</h6>
           <table className="my-table">
@@ -290,56 +291,7 @@ function InvoiceForm(props) {
           </table>
         </div>
 
-        <div className="col-md-12 text-center">
-          <div className="row">
-            <div className="col-6 g-3">
-              <input
-                type="text"
-                className="form-control"
-                id="inputDescription"
-                placeholder="Description"
-              />
-            </div>
-            <div className="col-6 g-3">
-              <input
-                type="text"
-                className="form-control"
-                id="inputRate"
-                placeholder="Rate"
-              />
-            </div>
-            <div className="col-6 g-3">
-              <input
-                type="number"
-                min={1}
-                defaultValue={1}
-                className="form-control"
-                id="inputQuantity"
-                placeholder="Quantity"
-              />
-            </div>
-            <div className="col-6 g-3">
-              <input
-                type="text"
-                className="form-control"
-                id="inputAmount"
-                placeholder="Amount"
-                readOnly
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-12 text-center">
-          <button
-            type="button"
-            className="btn btn-outline-dark px-4 my-2"
-            onClick={addItemHandler}
-          >
-            Add Items
-          </button>
-        </div>
-
+        {/* Item Total */}
         <div className="col-md-12 mt-4">
           <div className="row">
             <hr />
@@ -351,7 +303,6 @@ function InvoiceForm(props) {
             </div>
           </div>
         </div>
-
         <div className="col-md-12">
           <div className="row">
             <div className="col-4 border-dark border-bottom offset-5">
@@ -363,6 +314,51 @@ function InvoiceForm(props) {
           </div>
         </div>
 
+        {/* Item Details Inputs */}
+        <div className="col-md-12 text-center">
+          <div className="row">
+            <div className="col-6 g-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Description"
+              />
+            </div>
+            <div className="col-6 g-3">
+              <input type="text" className="form-control" placeholder="Rate" />
+            </div>
+            <div className="col-6 g-3">
+              <input
+                type="number"
+                min={1}
+                defaultValue={1}
+                className="form-control"
+                placeholder="Quantity"
+              />
+            </div>
+            <div className="col-6 g-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Amount"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Add Item Button */}
+        <div className="col-md-12 text-center">
+          <button
+            type="button"
+            className="btn btn-outline-dark px-4 my-2"
+            onClick={addItemHandler}
+          >
+            Add Items
+          </button>
+        </div>
+
+        {/* Note section */}
         <div className="col-12">
           <label htmlFor="floatingTextarea" className="form-label">
             Note:
@@ -379,19 +375,22 @@ function InvoiceForm(props) {
           ></textarea>
         </div>
 
+        {/* Buttons */}
         <div className="col-12 mb-4">
           <button type="submit" className="btn btn-success me-3">
             Submit
           </button>
           <button
             type="reset"
-            className="btn btn-danger"
+            className="btn btn-danger me-3 ps-3 pe-3"
             onClick={resetHandler}
           >
-            Clear
+            Reset
           </button>
+          <Link to="/invoice" className="btn btn-dark ps-4 pe-4">
+            Next
+          </Link>
         </div>
-        
       </form>
     </div>
   );

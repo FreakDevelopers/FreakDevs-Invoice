@@ -3,6 +3,7 @@ import "./App.css";
 import MasterLayout from './layouts/MasterLayout'
 import Invioce from './components/Invoice'
 import NewInvoice from "./components/NewInvoice";
+import Login from "./components/Login";
 
 function App() {
 
@@ -11,7 +12,8 @@ function App() {
       path: '/',
       element: <MasterLayout />,
       children: [
-        {path:'/', element: <Invioce />},
+        {path:'/', element: <Login />},
+        {path:'/home', element: <Invioce />},
         {path:'/invoice', element: <NewInvoice />},
       ]
     }
