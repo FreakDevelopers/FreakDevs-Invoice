@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import "./NewInvoice.css";
+import logo from "../../assets/logo.png";
+import "./InvoicePreview.css";
+
 
 function NewInvoice() {
   return (
@@ -27,7 +27,8 @@ function NewInvoice() {
         </div>
         <div className="invoice_no">
           <b>INVOICE</b>
-          <p>INV0001</p>
+          <p>INV0003</p>
+          {/* <p>INV0001</p> */}
           <b>DATE</b>
           <p>Dec 19, 2023</p>
           <b>BALANCE DUE</b>
@@ -97,7 +98,7 @@ function NewInvoice() {
           </div>
           <div className="total">
             <div className="w-76">
-              <p>BALANCE DUE</p>
+              <p>BALANCE PAID</p>
             </div>
             <div className="w-24">
               <p>₹2000</p>
@@ -113,7 +114,9 @@ function NewInvoice() {
           Dolorum, obcaecati adipisci.
         </p>
       </div>
-      <Link className="btn-custom non-printable" to={"/"}>Back</Link>
+      {/* <Link className="btn-custom non-printable" to={"/"}>
+        Back
+      </Link> */}
       <button
         type="button"
         className="btn-custom btn-red non-printable"

@@ -138,11 +138,16 @@
   word-wrap: break-word;
 }
 
+#item-details > tbody tr td:first-child {
+  padding-left: 0.5rem !important;
+}
+
 .invoice_container > .section-3 > .items_desk > table th {
   border-bottom: 1px solid rgba(0, 0, 0);
 }
 
-.invoice_container > .section-3 > .items_desk > table td {
+.invoice_container > .section-3 > .items_desk > table td,
+#item-details > tbody tr td {
   padding: 1rem 0;
   border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
 }
@@ -172,8 +177,13 @@
   min-width: 12%;
 }
 
-.invoice_container > .section-3 > .items_desk > table tbody tr:last-child td {
+.invoice_container > .section-3 > .items_desk > table tbody tr:last-child td,
+#item-details > tbody tr:last-child td {
   border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+}
+
+#item-details > thead tr th {
+  border-bottom: rgba(0, 0, 0, 0.5) solid 1px;
 }
 
 /* Items Total */
@@ -232,7 +242,7 @@
 /* Mobile Responsive */
 @media screen and (max-width: 480px) {
   .invoice_container {
-    padding: 1rem 1rem;
+    padding: 1rem 0.4rem;
   }
 
   .invoice_container > hr {
@@ -247,12 +257,25 @@
   }
 
   .invoice_container > .section-1 > .company_logo > .logo {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
   }
 
   .invoice_container > .section-1 > .company_info {
-    padding-left: 1rem;
+    padding-left: 0.6rem;
+  }
+
+  .invoice_container > .section-1 > .invoice_no > p {
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
+  
+  .invoice_container > .section-1 > .invoice_no b {
+    letter-spacing: 1px;
+    font-size: 0.6rem;
+    line-height: 1.4;
   }
 
   /* Section-2 */

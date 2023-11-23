@@ -1,41 +1,21 @@
 import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema({
-    name: {
+    invoiceNumber: {
         type: String,
         required: true
     },
-    email: {
-        type: StorageManager,
+    invoiceDate: {
+        type: Date,
         required: true,
-        lowercase: true
     },
-    mobile: {
+    balancePaid: {
         type: Number,
         required: true
     },
-    address1: {
-        type: String,
+    balanceDue: {
+        type: Number,
         required: true
-    },
-    address2: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    state:  {
-        type: String,
-        required: true
-    },
-    zipcode: {
-        type: String,
-        required: true
-    },
-    note: {
-        type: String
     },
     items: {
         type: mongoose.Schema.Types.ObjectId,

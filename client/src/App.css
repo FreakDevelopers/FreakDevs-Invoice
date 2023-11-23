@@ -11,6 +11,12 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+#root{
+  display: flex;
+  flex-direction: column;
+  /* min-height: 100vh; */
+}
+
 @media print {
     .non-printable{
         display: none !important;
