@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     zipcode: {
         type: String,
         required: true
+    },
+    invoices: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Invoice'
     }
 }, { timestamps: true })
 

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 function ItemDetails(props) {
-  const [itemDescription, setItemDescription] = useState('');
-  const [itemRate, setItemRate] = useState('');
-  const [itemQuantity, setitemQuantity] = useState('');
-  const [itemAmount, setItemAmount] = useState('');
+  const [itemDescription, setItemDescription] = useState("");
+  const [itemRate, setItemRate] = useState("");
+  const [itemQuantity, setItemQuantity] = useState("1");
+  const [itemAmount, setItemAmount] = useState("");
 
   const inputChangeHandler = (id, value) => {
     if (id === "description") {
@@ -14,7 +14,7 @@ function ItemDetails(props) {
       setItemRate(value);
       setItemAmount(value * itemQuantity);
     } else if (id === "quantity") {
-      setitemQuantity(value);
+      setItemQuantity(value);
       setItemAmount(itemRate * value);
     }
   };
@@ -27,12 +27,14 @@ function ItemDetails(props) {
       amount: itemAmount,
     };
     props.onSaveItemsData(myitemsData);
-    setItemDescription('');
-    setItemRate('');
-    setitemQuantity('');
-    setItemAmount('');
+    setItemDescription("");
+    setItemRate("");
+    setItemQuantity("1");
+    setItemAmount("");
     toast.success("Item Added..!");
   };
+
+  // console.log(props.itemsData);
   return (
     <>
       {/* Item Details Table */}
@@ -41,7 +43,10 @@ function ItemDetails(props) {
         <table id="item-details" className="table table-hover">
           <thead>
             <tr>
-              <th scope="col" width="50%">
+              <th scope="col" width="5%">
+                #
+              </th>
+              <th scope="col" width="45%">
                 Description
               </th>
               <th scope="col" width="20%" className="text-center">
@@ -56,42 +61,21 @@ function ItemDetails(props) {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>FreakDevs Domain</td>
-              <td align="center" className="text-center">
-                ₹4499
-              </td>
-              <td align="center" className="text-center">
-                2
-              </td>
-              <td align="center" className="text-center">
-                ₹8985.0
-              </td>
-            </tr>
-            <tr>
-              <td>FreakDevs Domain</td>
-              <td align="center" className="text-center">
-                ₹4499
-              </td>
-              <td align="center" className="text-center">
-                2
-              </td>
-              <td align="center" className="text-center">
-                ₹8985.0
-              </td>
-            </tr>
-            <tr>
-              <td>FreakDevs Domain</td>
-              <td align="center" className="text-center">
-                ₹4499
-              </td>
-              <td align="center" className="text-center">
-                2
-              </td>
-              <td align="center" className="text-center">
-                ₹8985.0
-              </td>
-            </tr>
+            {props.itemsData.slice().reverse().map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.description}</td>
+                <td align="center" className="text-center">
+                  ₹{item.rate}
+                </td>
+                <td align="center" className="text-center">
+                  {item.quantity}
+                </td>
+                <td align="center" className="text-center">
+                  ₹{item.amount}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -103,7 +87,17 @@ function ItemDetails(props) {
             <p className="mb-1">TOTAL</p>
           </div>
           <div className="col-3 border-dark border-bottom">
-            <p className="text-end me-5 mb-1">₹2455.0</p>
+            <p className="text-end me-5 mb-1">₹{props.amountData.balanceTotal}</p>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-12">
+        <div className="row">
+          <div className="col-4 border-dark border-bottom offset-5">
+            <p className="mb-1">BALANCE PAID</p>
+          </div>
+          <div className="col-3 border-dark border-bottom">
+            <p className="text-end me-5 mb-1">₹{props.amountData.balancePaid}</p>
           </div>
         </div>
       </div>
@@ -113,7 +107,7 @@ function ItemDetails(props) {
             <p className="mb-1">BALANCE DUE</p>
           </div>
           <div className="col-3 border-dark border-bottom">
-            <p className="text-end me-5 mb-1">₹2455.0</p>
+            <p className="text-end me-5 mb-1">₹{props.amountData.balanceDue}</p>
           </div>
         </div>
       </div>
@@ -121,18 +115,19 @@ function ItemDetails(props) {
       {/* Item Details Inputs */}
       <div className="col-md-12 text-center">
         <div className="row">
-          <div className="col-md-6 g-3"><div className="input-group">
+          <div className="col-md-6 g-3">
+            <div className="input-group">
               <span className="input-group-text">Item</span>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Description"
-              onChange={(e) => {
-                inputChangeHandler("description", e.target.value);
-              }}
-              value={itemDescription}
-            />
-          </div>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Description"
+                onChange={(e) => {
+                  inputChangeHandler("description", e.target.value);
+                }}
+                value={itemDescription}
+              />
+            </div>
           </div>
           <div className="col-md-2 g-3 ">
             <div className="input-group">
@@ -151,7 +146,7 @@ function ItemDetails(props) {
           </div>
           <div className="col-md-2 g-3">
             <div className="input-group">
-              <span className="input-group-text">Qauntity</span>
+              <span className="input-group-text">Qty</span>
               <input
                 type="number"
                 min={1}
@@ -160,6 +155,11 @@ function ItemDetails(props) {
                 onChange={(e) => {
                   inputChangeHandler("quantity", e.target.value);
                 }}
+                onBlur={
+                  (/^0+$/g).test(itemQuantity)
+                    ? setItemQuantity("1")
+                    : undefined
+                }
                 value={itemQuantity}
               />
             </div>

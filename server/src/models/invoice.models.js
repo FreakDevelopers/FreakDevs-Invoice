@@ -1,5 +1,24 @@
 import mongoose from "mongoose";
 
+const itemSchema = new mongoose.Schema({
+    description: {
+        type: String,
+        required: [true, 'Description is required']
+    },
+    rate: {
+        type: Number,
+        required: [true, 'Rate is required']
+    },
+    quantity: {
+        type: Number,
+        required: [true, 'Quantity is required']
+    },
+    amount: {
+        type: Number,
+        required: [true, 'Amount is required']
+    }
+})
+
 const invoiceSchema = new mongoose.Schema({
     invoiceNumber: {
         type: String,
@@ -17,9 +36,8 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    items: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item'
+    invoceItems: {
+        type: [itemSchema],
     }
 }, { timestamps: true })
 

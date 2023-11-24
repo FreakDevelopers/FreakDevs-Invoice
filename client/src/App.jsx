@@ -8,6 +8,7 @@ import Error401 from "./pages/Error401";
 import Home from "./pages/Home";
 import ManageInvoices from "./pages/ManageInvoices";
 import Invioces from "./components/Invoices/Invioces";
+import CreateInvoice from "./pages/CreateInvoice";
 
 function App() {
   return (
@@ -19,9 +20,21 @@ function App() {
             element={localStorage.getItem("token") ? <Home /> : <Login />}
           />
           <Route
+            path="/create-invoice"
+            element={
+              localStorage.getItem("token") ? <CreateInvoice /> : <Error401 />
+            }
+          />
+          <Route
             path="/manage-invoices"
             element={
               localStorage.getItem("token") ? <ManageInvoices /> : <Error401 />
+            }
+          />
+          <Route
+            path="/invoice-preview"
+            element={
+              localStorage.getItem("token") ? <InvoicePreview /> : <Error401 />
             }
           />
           <Route
