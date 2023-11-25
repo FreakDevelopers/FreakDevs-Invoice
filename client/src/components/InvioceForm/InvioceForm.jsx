@@ -42,7 +42,8 @@ function InvoiceForm(props) {
   ];
 
   const [invoiceNo, setInvoiceNo] = useState("INV0000");
-  const [invoiceDate, setInvoiceDate] = useState("");
+  // Add current date to the field instead of no value at all.
+  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().substring(0, 10));
   const [amountTotal, setAmountTotal] = useState("");
   const [amountPaid, setAmountPaid] = useState("0");
   const [amountDue, setAmountDue] = useState("");
