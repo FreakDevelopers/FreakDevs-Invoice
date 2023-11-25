@@ -3,6 +3,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const adminSchema = new mongoose.Schema({
+    invoiceNumber:{
+        type: String
+    },
     username: {
         type: String,
         required: [true, 'Username is required'],

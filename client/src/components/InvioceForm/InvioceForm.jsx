@@ -45,7 +45,7 @@ function InvoiceForm(props) {
   // Add current date to the field instead of no value at all.
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().substring(0, 10));
   const [amountTotal, setAmountTotal] = useState("");
-  const [amountPaid, setAmountPaid] = useState("0");
+  const [amountPaid, setAmountPaid] = useState("");
   const [amountDue, setAmountDue] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -123,9 +123,9 @@ function InvoiceForm(props) {
       cItem: [itemsData],
     };
     props.onSaveInvoiceData(customerData);
-    setInvoiceDate("");
+    setInvoiceDate(new Date().toISOString().substring(0, 10));
     setAmountTotal("");
-    setAmountPaid("0");
+    setAmountPaid("");
     setAmountDue("");
     setCustomerName("");
     setCustomerEmail("");
@@ -144,9 +144,9 @@ function InvoiceForm(props) {
       "Are you sure you want to clear form data?"
     );
     if (confirmed) {
-      setInvoiceDate("");
+      setInvoiceDate(new Date().toISOString().substring(0, 10));
       setAmountTotal("");
-      setAmountPaid("0");
+      setAmountPaid("");
       setAmountDue("");
       setCustomerName("");
       setCustomerEmail("");

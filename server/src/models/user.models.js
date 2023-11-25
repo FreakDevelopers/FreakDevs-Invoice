@@ -36,10 +36,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    invoices: {
+    projects: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Invoice'
-    }
+        ref: 'Project'
+    }]
 }, { timestamps: true })
 
 export const User = mongoose.model("User", userSchema)
