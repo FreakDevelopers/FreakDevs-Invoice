@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { InvoiceNumber } from "invoice-number";
-import "./InvoiceForm.css";
+import "./InvoiceForm.module.css";
 import ItemDetails from "../ItemDetails/ItemDetails";
 
 function InvoiceForm(props) {
@@ -42,7 +42,8 @@ function InvoiceForm(props) {
   ];
 
   const [invoiceNo, setInvoiceNo] = useState("INV0000");
-  const [invoiceDate, setInvoiceDate] = useState("");
+  // Add current date to the field instead of no value at all.
+  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().substring(0, 10));
   const [amountTotal, setAmountTotal] = useState("");
   const [amountPaid, setAmountPaid] = useState("0");
   const [amountDue, setAmountDue] = useState("");
@@ -173,70 +174,65 @@ function InvoiceForm(props) {
   useEffect(() => {
     balanceSum && setAmountTotal(balanceSum);
     balanceSum && setAmountDue(balanceSum - amountPaid);
-  }, [itemsData,balanceSum]);
+  }, [itemsData, balanceSum]);
   // console.log(balanceSum);
 
   return (
     <div className="container px-4">
       <h2 className="text-center my-4">Invoice Details</h2>
       <hr />
-      <div className="col-md-12 mt-5">
-        <h6>INVOICE NO:</h6>
-
-        <div className="col-md-12">
-          <div className="row">
-            <div className="col-md-2 col-sm-12 g-3">
-              <label htmlFor="invoiceNumber" className="form-label">
-                Invoice Number
-              </label>
-              <input
-                id="invoiceNumber"
-                type="text"
-                className="form-control"
-                value={invoiceNo}
-                // readOnly
-                disabled
-              />
-            </div>
-            <div className="col-md-2 col-sm-12 g-3">
-              <label htmlFor="invoiceDate" className="form-label">
-                Invoice Date
-              </label>
-              <input
-                id="invoiceDate"
-                type="date"
-                className="form-control"
-                placeholder="Date"
-                onChange={(e) => {
-                  inputChangeHandler("date", e.target.value);
-                }}
-                value={invoiceDate}
-              />
-            </div>
-            <div className="col-md-2 col-sm-12 g-3">
-              <label htmlFor="amountPaid" className="form-label">
-                Paid Amount
-              </label>
-              <div className="input-group">
-                <input
-                  id="amountPaid"
-                  type="number"
-                  min={0}
-                  className="form-control"
-                  placeholder="Amount Paid"
-                  onChange={(e) => {
-                    inputChangeHandler("amountPaid", e.target.value);
-                  }}
-                  value={amountPaid}
-                />
-                <span className="input-group-text">₹</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <form className="row mt-2 g-3" onSubmit={submitHandler}>
+        <h6>INVOICE NO:</h6>
+
+        <div className="col-md-4 col-sm-12">
+          <label htmlFor="invoiceNumber" className="form-label">
+            Invoice Number
+          </label>
+          <input
+            id="invoiceNumber"
+            type="text"
+            className="form-control"
+            value={invoiceNo}
+            // readOnly
+            disabled
+          />
+        </div>
+        <div className="col-md-4 col-sm-12">
+          <label htmlFor="invoiceDate" className="form-label">
+            Invoice Date
+          </label>
+          <input
+            id="invoiceDate"
+            type="date"
+            className="form-control"
+            placeholder="Date"
+            onChange={(e) => {
+              inputChangeHandler("date", e.target.value);
+            }}
+            value={invoiceDate}
+          />
+        </div>
+        <div className="col-md-4 col-sm-12">
+          <label htmlFor="amountPaid" className="form-label">
+            Paid Amount
+          </label>
+          <div className="input-group">
+            <input
+              id="amountPaid"
+              type="number"
+              min={0}
+              className="form-control"
+              placeholder="Amount Paid"
+              onChange={(e) => {
+                inputChangeHandler("amountPaid", e.target.value);
+              }}
+              value={amountPaid}
+            />
+            <span className="input-group-text">₹</span>
+          </div>
+        </div>
+
         <h6>BILL TO:</h6>
 
         <div className="col-md-4 col-sm-12">
