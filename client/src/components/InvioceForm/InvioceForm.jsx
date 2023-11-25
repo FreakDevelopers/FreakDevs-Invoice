@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { InvoiceNumber } from "invoice-number";
-import "./InvoiceForm.css";
+import "./InvoiceForm.module.css";
 import ItemDetails from "../ItemDetails/ItemDetails";
 
 function InvoiceForm(props) {
