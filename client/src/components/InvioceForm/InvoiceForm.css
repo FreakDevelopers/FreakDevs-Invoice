@@ -1,10 +1,11 @@
-.my-table > table {
+.my-table>table {
   /* table-layout: fixed; */
   width: 100%;
   border-collapse: collapse;
 }
 
-.my-table > table th,td {
+.my-table>table th,
+td {
   vertical-align: top;
   font-size: 0.6rem;
   letter-spacing: 1px;
@@ -18,7 +19,7 @@
 
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
-.show > .btn-secondary.dropdown-toggle:focus {
+.show>.btn-secondary.dropdown-toggle:focus {
   box-shadow: none !important;
 }
 
