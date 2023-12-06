@@ -1,12 +1,14 @@
-import React from 'react'
+import React from "react";
 
 function Footer() {
-    const year = new Date().getFullYear();
-    return (
-        <footer className="footer bg-dark mt-auto non-printable flex-shrink-0">
-                <p className='text-light text-center py-3 mx-1 mb-0'>&copy; 2022-{year} FreakDevs. All rights reserved.</p>
-        </footer>
-    )
+  const year = new Date().getFullYear();
+  return (
+    <footer className="bg-slate-900 text-slate-300 py-5 mt-auto non-printable">
+      <p className="text-center">
+        &copy; 2022-{year} <a className="hover:text-white cursor-pointer" target="_blank" href="https://freakdevs.in">FreakDevs</a>. All rights reserved.
+      </p>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

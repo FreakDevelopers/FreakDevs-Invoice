@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import ManageInvoices from "./pages/ManageInvoices";
 import Invioces from "./components/Invoices/Invioces";
 import CreateInvoice from "./pages/CreateInvoice";
+import Reset from "./pages/Reset";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             path="/"
             element={localStorage.getItem("token") ? <Home /> : <Login />}
           />
+          <Route path="/Reset-Password" element={<Reset />} />
           <Route
             path="/create-invoice"
             element={
