@@ -5,7 +5,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerAdmin = asyncHandler(async (req, res) => {
     const { username, password } = req.body
-    // console.log("username: ", username);
 
     if (
         [username, password].some((field) => field?.trim() === "")
@@ -35,10 +34,14 @@ const registerAdmin = asyncHandler(async (req, res) => {
 
 
 const getAdmin = asyncHandler(async (req, res) => {
-    const { username, password } = await Admin.findOne()
-    const admin = { username, password }
+    const { username, password } = req.body
+    const admin = await Admin.findOne({ username, password })
+    if (admin == null) {
+        throw new ApiError(404, "Incorrect Credentials..!")
+    }
+
     return res.status(201).json(
-        new ApiResponse(200, admin, "Admin Found..!")
+        new ApiResponse(200, admin, "Login Successful..!")
     )
 })
 

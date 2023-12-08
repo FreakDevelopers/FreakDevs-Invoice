@@ -8,49 +8,41 @@ import Error404 from "./pages/Error404";
 import Error401 from "./pages/Error401";
 import Home from "./pages/Home";
 import ManageInvoices from "./pages/ManageInvoices";
-import Invioces from "./components/Invoices/Invioces";
+import AllInvioces from "./components/AllInvioces/AllInvioces";
 import CreateInvoice from "./pages/CreateInvoice";
 import Reset from "./pages/Reset";
+import { useContext } from "react";
+import UserContext from "./context/UserContext";
+import SignUp from "./pages/SignUp";
 
 function App() {
+  const { user, token } = useContext(UserContext);
   return (
     <>
       <Routes>
         <Route path="/" element={<MasterLayout />}>
-          <Route
-            path="/"
-            element={localStorage.getItem("token") ? <Home /> : <Login />}
-          />
+          <Route path="/" element={token && user ? <Home /> : <Login />} />
+          <Route path="/signup" element={token && user ? <Home /> : <SignUp />} />
           <Route path="/Reset-Password" element={<Reset />} />
           <Route
             path="/create-invoice"
-            element={
-              localStorage.getItem("token") ? <CreateInvoice /> : <Error401 />
-            }
+            element={token && user ? <CreateInvoice /> : <Error401 />}
           />
           <Route
             path="/manage-invoices"
-            element={
-              localStorage.getItem("token") ? <ManageInvoices /> : <Error401 />
-            }
+            element={token && user ? <ManageInvoices /> : <Error401 />}
           />
           <Route
             path="/invoice-preview"
-            element={
-              localStorage.getItem("token") ? <InvoicePreview /> : <Error401 />
-            }
+            element={token && user ? <InvoicePreview /> : <Error401 />}
           />
           <Route
-            path="/manage-invoices/:userId"
-            element={
-              localStorage.getItem("token") ? <Invioces /> : <Error401 />
-            }
+            path="/All-invoices"
+            element={token && user ? <AllInvioces /> : <Error401 />}
           />
           <Route
             path="/manage-invoices/:userid/:invoiceId"
-            element={
-              localStorage.getItem("token") ? <InvoicePreview /> : <Error401 />
-            }
+            element={token && user ? <InvoicePreview /> : <Error401 />}
           />
         </Route>
         <Route path="/*" element={<Error404 />} />

@@ -7,7 +7,7 @@ import UserContext from "../context/UserContext";
 import axios from "axios";
 import { useState } from "react";
 
-function Login() {
+function SignUp() {
   const { setUser, setToken } = useContext(UserContext);
   const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
@@ -20,23 +20,18 @@ function Login() {
     }
   };
 
-  const loginHandler = async (e) => {
+  const registerHandler = async (e) => {
     e.preventDefault();
-    // const user = ;
     const response = await axios
-      .post("http://127.0.0.1:8000/", {
+      .post("http://127.0.0.1:8000/signup", {
         username,
         password,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.data._id);
-        localStorage.setItem("user", res.data.data.username);
-        setToken(localStorage.getItem("token"));
-        setUser(localStorage.getItem("user"));
-        toast.success(res.data.message);
+        toast.success("Signup Successful..!");
       })
       .catch((err) => {
-        toast.error("Something Went Wrong..!");
+        toast.error("All fields are required");
       });
   };
 
@@ -47,15 +42,15 @@ function Login() {
           <img src={logo} width={100} className="mx-auto" />
           <div className="mt-5 space-y-2">
             <h3 className="text-gray-800 font-bold text-3xl">
-              Sign-in
+              Sign-up
             </h3>
             <p className="">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link
-                to="/signup"
+                to="/"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Register
+                Login
               </Link>
             </p>
           </div>
@@ -82,14 +77,14 @@ function Login() {
             />
           </div>
           <button
-            onClick={loginHandler}
+            onClick={registerHandler}
             className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
           >
-            Sign In
+            Sign Up
           </button>
           <div className="text-center">
-            <Link to="/Reset-Password" className="hover:text-indigo-600">
-              Forgot password?
+            <Link to="/Reset-password" className="hover:text-indigo-600">
+              Forgot Password ?
             </Link>
           </div>
         </form>
@@ -98,4 +93,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;

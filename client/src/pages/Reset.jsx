@@ -44,9 +44,9 @@ function Reset() {
             Send OTP
           </button>
           <div className="text-center">
-            <span className="font-semibold">Already a Admin User - </span>
-            <Link to="/" className="hover:text-indigo-600">
-              Login Here?
+            <span className="font-semibold">Already a Admin User ? </span>
+            <Link to="/" className="text-indigo-600">
+              Login Here
             </Link>
           </div>
         </form>

@@ -3,7 +3,7 @@ import { getAdmin, registerAdmin } from "../controllers/admin.controller.js";
 
 const router = Router()
 
-// router.route("/register").post(registerAdmin)
-router.route("/").get(getAdmin)
+router.route("/signup").post(registerAdmin)
+router.route("/").post(getAdmin)
 
 export default router

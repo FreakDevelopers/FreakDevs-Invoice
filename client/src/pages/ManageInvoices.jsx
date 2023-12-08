@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function ManageInvoices() {
   const tableItems = [
@@ -71,23 +72,38 @@ function ManageInvoices() {
       <div className="items-start justify-between md:flex">
         <div className="max-w-lg">
           <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-            Team members
+            Manage Invoices
           </h3>
-          <p className="text-gray-600 mt-2">
+          {/* <p className="text-gray-600 mt-2">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry.
-          </p>
+          </p> */}
         </div>
+
         <div className="mt-3 md:mt-0">
-          <a
-            href="javascript:void(0)"
+          <Link
+            to="/"
             className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm"
           >
             Add member
-          </a>
+          </Link>
         </div>
       </div>
-      <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+      <form
+            onSubmit={(e) => e.preventDefault()} 
+            className="max-w-md px-4 mx-auto mt-12">
+            <div className="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
+                />
+            </div>
+        </form>
+      <div className="mt-10 shadow-sm border rounded-lg overflow-x-auto">
         <table className="w-full table-auto text-sm text-left">
           <thead className="text-gray-600 font-medium border-b">
             <tr>
@@ -138,15 +154,12 @@ function ManageInvoices() {
                 <td className="px-6 py-4 whitespace-nowrap">{item.salary}</td>
                 <td className="text-right px-6 whitespace-nowrap">
                   <a
-                    href="javascript:void()"
+                    to="/"
                     className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
                   >
                     Edit
                   </a>
-                  <button
-                    href="javascript:void()"
-                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
-                  >
+                  <button className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
                     Delete
                   </button>
                 </td>
