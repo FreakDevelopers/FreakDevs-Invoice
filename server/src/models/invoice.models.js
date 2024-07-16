@@ -38,6 +38,11 @@ const invoiceSchema = new mongoose.Schema({
     },
     invoceItems: {
         type: [itemSchema],
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 }, { timestamps: true })
 

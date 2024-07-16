@@ -18,8 +18,10 @@ app.use(cookieParser())
 
 // routtees import
 import adminRouter from "./routes/admin.routes.js"
+import userRouter from "./routes/user.routes.js"
 
 // routes declaration
 app.use("/", adminRouter)
+app.use("/", userRouter)
 
 export { app }

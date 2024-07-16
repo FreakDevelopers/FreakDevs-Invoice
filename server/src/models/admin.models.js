@@ -3,9 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const adminSchema = new mongoose.Schema({
-    invoiceNumber:{
-        type: String
-    },
     username: {
         type: String,
         required: [true, 'Username is required'],
@@ -16,11 +13,12 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password is required']
     }
-})
+}, { timestamps: true })
 
 adminSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    this.password = bcrypt.hash(this.password, 10)
+    if (!(this.isModified("password"))) return next();
+    this.password = await bcrypt.hash(this.password, 10)
+    // console.log(this.password);
     next()
 })
 

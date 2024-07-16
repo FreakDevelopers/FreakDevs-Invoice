@@ -1,45 +1,43 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    username: {
+    userName: {
         type: String,
-        required: [true, 'Username is required'],
+        required: true,
         unique: true,
     },
-    email: {
-        type: StorageManager,
+    userEmail: {
+        type: String,
         unique: true,
         required: true,
         lowercase: true
     },
-    mobile: {
+    userMobile: {
         type: Number,
         required: true
     },
-    address1: {
+    userAddress: {
         type: String,
         required: true
     },
-    address2: {
+    userCity: {
         type: String,
         required: true
     },
-    city: {
+    userState: {
         type: String,
         required: true
     },
-    state: {
+    userZipCode: {
         type: String,
         required: true
     },
-    zipcode: {
-        type: String,
-        required: true
-    },
-    projects: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project'
-    }]
+    userInvoices: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Invoice"
+        }
+    ]
 }, { timestamps: true })
 
 export const User = mongoose.model("User", userSchema)

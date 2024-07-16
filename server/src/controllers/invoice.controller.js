@@ -1,10 +1,9 @@
-import bcrypt from "bcrypt"
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js"
-import { Admin } from "../models/admin.models.js"
+import { Invoice } from "../models/invoice.models.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const registerAdmin = asyncHandler(async (req, res) => {
+const createInvoice = asyncHandler(async (req, res) => {
     const { username, password } = req.body
 
     if (
@@ -36,19 +35,10 @@ const registerAdmin = asyncHandler(async (req, res) => {
 
 const getAdmin = asyncHandler(async (req, res) => {
     const { username, password } = req.body
-
-    // Find admin by username
-    const admin = await Admin.findOne({ username });
-    if (!admin) {
-        throw new ApiError(404, "Incorrect Username..!");
+    const admin = await Admin.findOne({ username, password })
+    if (admin == null) {
+        throw new ApiError(404, "Incorrect Credentials..!")
     }
-
-    // Compare the provided password with the hashed password
-    const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) {
-        throw new ApiError(404, "Incorrect Password..!");
-    }
-    admin.password = undefined;
 
     return res.status(201).json(
         new ApiResponse(200, admin, "Login Successful..!")
