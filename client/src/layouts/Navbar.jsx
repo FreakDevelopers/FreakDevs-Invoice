@@ -3,18 +3,21 @@ import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken, setUser } from "../features/auth/authSlice";
 
 function Navbar() {
   const [state, setState] = useState(false);
-  const { token, setToken, setUser } = useContext(UserContext);
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     localStorage.clear();
-    setToken(null);
-    setUser(null);
+    localStorage.clear();
+    sessionStorage.clear();
+    dispatch(setToken(null));
+    dispatch(setUser(null));
     toast.success("Logout Successful..!");
     navigate("/");
   };

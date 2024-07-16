@@ -2,13 +2,10 @@ import React from "react";
 import toast from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
 import axios from "axios";
 import { useState } from "react";
 
 function SignUp() {
-  const { setUser, setToken } = useContext(UserContext);
   const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
 
@@ -41,9 +38,7 @@ function SignUp() {
         <div className="text-center">
           <img src={logo} width={100} className="mx-auto" />
           <div className="mt-5 space-y-2">
-            <h3 className="text-gray-800 font-bold text-3xl">
-              Sign-up
-            </h3>
+            <h3 className="text-gray-800 font-bold text-3xl">Sign-up</h3>
             <p className="">
               Already have an account?{" "}
               <Link

@@ -11,12 +11,12 @@ import ManageInvoices from "./pages/ManageInvoices";
 import AllInvioces from "./components/AllInvioces/AllInvioces";
 import CreateInvoice from "./pages/CreateInvoice";
 import Reset from "./pages/Reset";
-import { useContext } from "react";
-import UserContext from "./context/UserContext";
 import SignUp from "./pages/SignUp";
+import CreateUser from "./pages/CreateUser";
+import { useSelector } from "react-redux";
 
 function App() {
-  const { user, token } = useContext(UserContext);
+  const { token, user } = useSelector((state) => state.auth);
   return (
     <>
       <Routes>
@@ -24,6 +24,10 @@ function App() {
           <Route path="/" element={token && user ? <Home /> : <Login />} />
           <Route path="/signup" element={token && user ? <Home /> : <SignUp />} />
           <Route path="/Reset-Password" element={<Reset />} />
+          <Route
+            path="/create-user"
+            element={token && user ? <CreateUser /> : <Error401 />}
+          />
           <Route
             path="/create-invoice"
             element={token && user ? <CreateInvoice /> : <Error401 />}

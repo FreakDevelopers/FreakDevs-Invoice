@@ -22,7 +22,8 @@ const itemSchema = new mongoose.Schema({
 const invoiceSchema = new mongoose.Schema({
     invoiceNumber: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     invoiceDate: {
         type: Date,

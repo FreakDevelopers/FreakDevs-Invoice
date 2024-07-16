@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
 import axios from "axios";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../features/auth/authSlice";
 
 function Login() {
-  const { setUser, setToken } = useContext(UserContext);
+  const dispatch = useDispatch();
   const [username, setUserame] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,9 +29,9 @@ function Login() {
       })
       .then((res) => {
         localStorage.setItem("token", res.data.data._id);
+        dispatch(setToken(res.data.data._id));
         localStorage.setItem("user", res.data.data.username);
-        setToken(localStorage.getItem("token"));
-        setUser(localStorage.getItem("user"));
+        dispatch(setUser(res.data.data.username));
         toast.success(res.data.message);
       })
       .catch((err) => {
@@ -46,9 +45,7 @@ function Login() {
         <div className="text-center">
           <img src={logo} width={100} className="mx-auto" />
           <div className="mt-5 space-y-2">
-            <h3 className="text-gray-800 font-bold text-3xl">
-              Sign-in
-            </h3>
+            <h3 className="text-gray-800 font-bold text-3xl">Sign-in</h3>
             <p className="">
               Don't have an account?{" "}
               <Link
