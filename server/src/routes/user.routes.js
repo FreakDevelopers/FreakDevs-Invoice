@@ -3,9 +3,9 @@ import { addUser, getUser, getAllUsers, updateUser } from "../controllers/user.c
 
 const router = Router()
 
-router.route("/addUser").post(addUser)
-router.route("/users/:id").get(getUser)
-router.route("/getAllUsers").get(getAllUsers)
-router.route("/users/:id").put(updateUser)
+router.route("/createCustomer").post(addUser)
+router.route("/customer/:id").get(getUser)
+router.route("/getAllCustomers").get(getAllUsers)
+router.route("/customer/:id").put(updateUser)
 
 export default router

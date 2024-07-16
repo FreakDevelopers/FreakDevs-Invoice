@@ -1,45 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { InvoiceNumber } from "invoice-number";
 import ItemDetails from "../ItemDetails/ItemDetails";
+import { states } from "../../data/constants";
 
 function InvoiceForm(props) {
-  const states = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
-    "Andaman and Nicobar Islands",
-    "Chandigarh",
-    "Dadra and Nagar Haveli and Daman and Diu",
-    "Delhi",
-    "Lakshadweep",
-    "Puducherry",
-  ];
-
   const [invoiceNo, setInvoiceNo] = useState("INV0000");
   // Add current date to the field instead of no value at all.
   const [invoiceDate, setInvoiceDate] = useState(

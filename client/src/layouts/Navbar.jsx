@@ -24,9 +24,9 @@ function Navbar() {
 
   const navigation = [
     { title: "Home", path: "/" },
+    { title: "Create Customer", path: "/create-customer" },
     { title: "Create invoice", path: "/create-invoice" },
-    { title: "Users", path: "/users" },
-    { title: "Invoices", path: "/invoice-preview" },
+    { title: "Invoices", path: "/invoices" },
     { title: "Manage", path: "/manage-invoices" },
   ];
   return (

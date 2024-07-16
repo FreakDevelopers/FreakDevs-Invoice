@@ -25,7 +25,7 @@ const addUser = asyncHandler(async (req, res) => {
     const createdUser = await User.findById(user._id)
 
     return res.status(201).json(
-        new ApiResponse(200, createdUser, "User Added Successfully")
+        new ApiResponse(200, createdUser, "Customer Created Successfully")
     )
 })
 

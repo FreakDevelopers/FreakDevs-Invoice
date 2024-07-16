@@ -12,8 +12,9 @@ import AllInvioces from "./components/AllInvioces/AllInvioces";
 import CreateInvoice from "./pages/CreateInvoice";
 import Reset from "./pages/Reset";
 import SignUp from "./pages/SignUp";
-import CreateUser from "./pages/CreateUser";
+import CreateCustomer from "./pages/CreateCustomer";
 import { useSelector } from "react-redux";
+import UpdateCustomer from "./pages/updateCustomer";
 
 function App() {
   const { token, user } = useSelector((state) => state.auth);
@@ -22,12 +23,19 @@ function App() {
       <Routes>
         <Route path="/" element={<MasterLayout />}>
           <Route path="/" element={token && user ? <Home /> : <Login />} />
-          <Route path="/signup" element={token && user ? <Home /> : <SignUp />} />
+          <Route
+            path="/signup"
+            element={token && user ? <Home /> : <SignUp />}
+          />
           <Route path="/Reset-Password" element={<Reset />} />
           <Route
-            path="/create-user"
-            element={token && user ? <CreateUser /> : <Error401 />}
+            path="/create-customer"
+            element={token && user ? <CreateCustomer /> : <Error401 />}
           />
+            <Route
+              path="/update-customer/:id"
+              element={token && user ? <UpdateCustomer /> : <Error401 />}
+            />
           <Route
             path="/create-invoice"
             element={token && user ? <CreateInvoice /> : <Error401 />}
@@ -41,11 +49,11 @@ function App() {
             element={token && user ? <InvoicePreview /> : <Error401 />}
           />
           <Route
-            path="/All-invoices"
+            path="/invoices"
             element={token && user ? <AllInvioces /> : <Error401 />}
           />
           <Route
-            path="/manage-invoices/:userid/:invoiceId"
+            path="/invoices/:invoiceId"
             element={token && user ? <InvoicePreview /> : <Error401 />}
           />
         </Route>

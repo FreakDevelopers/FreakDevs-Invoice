@@ -17,11 +17,11 @@ function Home() {
       <div className="py-4 grid sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
       <div className="p-4 rounded shadow-lg mx-auto sm:mx-0 w-64 sm:w-auto h-56 lg:h-60 text-center flex flex-col justify-evenly items-center border-t-4 border-t-indigo-100 hover:border-indigo-600 hover:scale-105 transition-all ease-linear duration-300">
           <FaUserPlus className="w-16 h-16 text-white bg-indigo-600 rounded-lg p-2" />
-          <h1 className="font-bold uppercase text-lg">Create Users</h1>
-          <Link to="/create-user" className="">
+          <h1 className="font-bold uppercase text-lg">Create Customer</h1>
+          <Link to="/create-customer" className="">
             <FaArrowRight className="inline-block w-6 h-6 p-1 text-xl text-white duration-150 font-medium bg-indigo-600 rounded-full outline-none border hover:bg-white hover:text-indigo-600 hover:border-indigo-600 hover:border-solid" />{" "}
             <span className="inline hover:text-blue-500">
-              Click to Create Users
+              Click to Create Customer
             </span>
           </Link>
         </div>
