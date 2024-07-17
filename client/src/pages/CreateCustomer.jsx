@@ -90,7 +90,7 @@ function CreateCustomer() {
               type="text"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               id="inputName"
-              placeholder=" e.g. John Doe"
+              placeholder="e.g. John Doe"
               onChange={(e) => {
                 inputChangeHandler("name", e.target.value);
               }}
@@ -131,7 +131,7 @@ function CreateCustomer() {
           </div>
         </div>
 
-        <div className="col-12">
+        <div>
           <label htmlFor="inputAddress" className="block py-2 text-gray-600">
             Address
           </label>
@@ -147,7 +147,7 @@ function CreateCustomer() {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4">
-          <div className="col-md-6">
+          <div>
             <label htmlFor="inputCity" className="block py-2 text-gray-600">
               City
             </label>
@@ -163,7 +163,7 @@ function CreateCustomer() {
             />
           </div>
 
-          <div className="">
+          <div>
             <label htmlFor="inputState" className="block py-2 text-gray-600">
               State
             </label>
@@ -184,7 +184,7 @@ function CreateCustomer() {
             </select>
           </div>
 
-          <div className="col-md-2">
+          <div>
             <label htmlFor="inputZip" className="block py-2 text-gray-600">
               Zip Code
             </label>

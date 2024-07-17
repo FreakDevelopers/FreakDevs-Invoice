@@ -29,7 +29,11 @@ const invoiceSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    balancePaid: {
+    amountPaid: {
+        type: Number,
+        required: true
+    },
+    amountTotal: {
         type: Number,
         required: true
     },
@@ -39,11 +43,15 @@ const invoiceSchema = new mongoose.Schema({
     },
     invoceItems: {
         type: [itemSchema],
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    note: {
+        type: String,
     }
 }, { timestamps: true })
 

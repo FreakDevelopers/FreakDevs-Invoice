@@ -5,27 +5,23 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 
 const createInvoice = asyncHandler(async (req, res) => {
-    const { invoiceNumber, invoiceDate, balancePaid, balanceDue, invoceItems, user } = req.body
+    const { invoiceNumber, invoiceDate, amountTotal, amountPaid, balanceDue, invoceItems, user, note } = req.body
 
     if (
-        [invoiceNumber, invoiceDate, balancePaid, balanceDue, invoceItems, user].some((field) => field == ("" || null || [] || undefined))
+        [invoiceNumber, invoiceDate, amountTotal, amountPaid, balanceDue, invoceItems, user].some((field) => field == ("" || null || [] || undefined))
     ) {
         throw new ApiError(400, "All fields are required")
     }
 
-    // const existedAdmin = await Admin.findOne({ username })
-
-    // if (existedAdmin) {
-    //     throw new ApiError(409, "User with email or username already exists")
-    // }
-
     const invoice = await Invoice.create({
         invoiceNumber,
         invoiceDate,
-        balancePaid,
+        amountPaid,
+        amountTotal,
         balanceDue,
         invoceItems,
-        user
+        user,
+        note
     })
 
     const user1 = await User.findById(user)
@@ -35,21 +31,29 @@ const createInvoice = asyncHandler(async (req, res) => {
     const createdInvoice = await Invoice.findById(invoice._id)
 
     return res.status(201).json(
-        new ApiResponse(200, createdInvoice, "User registered Successfully")
+        new ApiResponse(200, createdInvoice, "Invoice Created Successfully")
     )
 })
 
+const getInvoiceNumber = asyncHandler(async (req, res) => {
+    const latestInvoice = await Invoice.findOne().sort({ createdAt: -1 });
+    if (latestInvoice == null) {
+        return res.status(201).json(
+            new ApiResponse(200, "INV0000", "Found Invoice Number")
+        )
+    }
 
-// const getAdmin = asyncHandler(async (req, res) => {
-//     const { username, password } = req.body
-//     const admin = await Admin.findOne({ username, password })
-//     if (admin == null) {
-//         throw new ApiError(404, "Incorrect Credentials..!")
-//     }
+    return res.status(201).json(
+        new ApiResponse(200, latestInvoice.invoiceNumber, "Found Invoice Number")
+    )
+})
 
-//     return res.status(201).json(
-//         new ApiResponse(200, admin, "Login Successful..!")
-//     )
-// })
+const getInvoices = asyncHandler(async (req, res) => {
+    const allInvoices = await Invoice.find();
 
-export { createInvoice }
+    return res.status(201).json(
+        new ApiResponse(200, allInvoices, "Found Invoices")
+    )
+})
+
+export { createInvoice, getInvoiceNumber, getInvoices }
