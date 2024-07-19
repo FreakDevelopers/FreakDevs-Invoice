@@ -5,12 +5,10 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
 
 const createInvoice = asyncHandler(async (req, res) => {
-    const { invoiceNumber, invoiceDate, amountTotal, amountPaid, balanceDue, invoceItems, user, note } = req.body
+    const { invoiceNumber, invoiceDate, amountTotal, amountPaid, balanceDue, invoiceItems, user, note } = req.body
 
-    if (
-        [invoiceNumber, invoiceDate, amountTotal, amountPaid, balanceDue, invoceItems, user].some((field) => field == ("" || null || [] || undefined))
-    ) {
-        throw new ApiError(400, "All fields are required")
+    if ((user == "") || (invoiceNumber == "") || (invoiceDate == "") || (amountPaid == "") || (invoiceItems.length < 1)) {
+        throw new ApiError(401, "All fields are required")
     }
 
     const invoice = await Invoice.create({
@@ -19,14 +17,17 @@ const createInvoice = asyncHandler(async (req, res) => {
         amountPaid,
         amountTotal,
         balanceDue,
-        invoceItems,
+        invoiceItems,
         user,
         note
     })
-
-    const user1 = await User.findById(user)
-    user1.userInvoices.push(invoice)
-    user1.save()
+    try {
+        const user1 = await User.findById(user)
+        user1.userInvoices.push(invoice)
+        user1.save()
+    } catch (error) {
+        throw new ApiError(402, "Error saving invoice")
+    }
 
     const createdInvoice = await Invoice.findById(invoice._id)
 

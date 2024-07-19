@@ -1,49 +1,18 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { addInvoiceItems } from "../../features/invoice/invoiceSlice";
 
-function ItemDetails(props) {
-  const tableItems = [
-    {
-      name: "Solo learn app",
-      date: "Oct 9, 2023",
-      status: "Active",
-      price: "$35.000",
-      plan: "Monthly subscription",
-    },
-    {
-      name: "Window wrapper",
-      date: "Oct 12, 2023",
-      status: "Active",
-      price: "$12.000",
-      plan: "Monthly subscription",
-    },
-    {
-      name: "Unity loroin",
-      date: "Oct 22, 2023",
-      status: "Archived",
-      price: "$20.000",
-      plan: "Annually subscription",
-    },
-    {
-      name: "Background remover",
-      date: "Jan 5, 2023",
-      status: "Active",
-      price: "$5.000",
-      plan: "Monthly subscription",
-    },
-    {
-      name: "Colon tiger",
-      date: "Jan 6, 2023",
-      status: "Active",
-      price: "$9.000",
-      plan: "Annually subscription",
-    },
-  ];
-
+function ItemDetails() {
+  const dispatch = useDispatch();
+  const { invoiceItems, amountTotal, amountPaid, balanceDue } = useSelector(
+    (state) => state.invoice
+  );
   const [itemDescription, setItemDescription] = useState("");
   const [itemRate, setItemRate] = useState("");
   const [itemQuantity, setItemQuantity] = useState("1");
   const [itemAmount, setItemAmount] = useState("");
+  // console.log(invoiceItems);
 
   const inputChangeHandler = (id, value) => {
     if (id === "description") {
@@ -58,13 +27,13 @@ function ItemDetails(props) {
   };
 
   const addItemHandler = () => {
-    const myitemsData = {
+    const data = {
       description: itemDescription,
-      rate: itemRate,
-      quantity: itemQuantity,
+      rate: parseInt(itemRate),
+      quantity: parseInt(itemQuantity),
       amount: itemAmount,
     };
-    props.onSaveItemsData(myitemsData);
+    dispatch(addInvoiceItems(data));
     setItemDescription("");
     setItemRate("");
     setItemQuantity("1");
@@ -72,7 +41,6 @@ function ItemDetails(props) {
     toast.success("Item Added..!");
   };
 
-  // console.log(props.itemsData);
   return (
     <>
       {/* <h6 className="font-bold">ITEM DETAILS:</h6> */}
@@ -88,71 +56,63 @@ function ItemDetails(props) {
             </tr>
           </thead>
           <tbody className="text-gray-600 border-y divide-y-2">
-            {props.itemsData
-              .slice()
-              .reverse()
-              .map((item, idx) => (
-                <tr key={idx}>
-                  <td className="px-3 py-4 text-center whitespace-nowrap">
-                    {idx + 1}
-                  </td>
-                  <td className="px-3 py-4 whitespace-nowrap">
-                    {item.description}
-                  </td>
-                  <td className="py-4 text-center whitespace-nowrap">
-                    ₹{item.rate}
-                  </td>
-                  <td className="py-4 text-center whitespace-nowrap">
-                    {item.quantity}
-                  </td>
-                  <td className="py-4 text-center whitespace-nowrap">
-                    ₹{item.amount}
-                  </td>
-                 
-                </tr>
-              ))}
+            {invoiceItems.length > 0 ? (
+              invoiceItems
+                .slice()
+                .reverse()
+                .map((item, idx) => (
+                  <tr key={idx}>
+                    <td className="px-3 py-4 text-center whitespace-nowrap">
+                      {idx + 1}
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap">
+                      {item.description}
+                    </td>
+                    <td className="py-4 text-center whitespace-nowrap">
+                      ₹{item.rate}
+                    </td>
+                    <td className="py-4 text-center whitespace-nowrap">
+                      {item.quantity}
+                    </td>
+                    <td className="py-4 text-center whitespace-nowrap">
+                      ₹{item.amount}
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="py-8 text-lg font-bold text-center">
+                  <p>Please Add Items</p>
+                </td>
+              </tr>
+            )}
+            <tr>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-left">TOTAL</td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center">₹{amountTotal}</td>
+            </tr>
+            <tr>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-left">BALANCE PAID</td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center">₹{amountPaid}</td>
+            </tr>
+            <tr>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-left">BALANCE DUE</td>
+              <td className="px-0 py-2 text-center whitespace-nowrap"></td>
+              <td className="px-0 py-2 text-center">₹{balanceDue}</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      {/* Item Total */}
-      <div className="col-md-12 mt-4">
-        <div className="row">
-          <div className="col-4 border-dark border-bottom offset-5">
-            <p className="mb-1">TOTAL</p>
-          </div>
-          <div className="col-3 border-dark border-bottom">
-            <p className="text-end me-5 mb-1">
-              ₹{props.amountData.balanceTotal}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-12">
-        <div className="row">
-          <div className="col-4 border-dark border-bottom offset-5">
-            <p className="mb-1">BALANCE PAID</p>
-          </div>
-          <div className="col-3 border-dark border-bottom">
-            <p className="text-end me-5 mb-1">
-              ₹{props.amountData.balancePaid}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-12">
-        <div className="row">
-          <div className="col-4 border-dark border-bottom offset-5">
-            <p className="mb-1">BALANCE DUE</p>
-          </div>
-          <div className="col-3 border-dark border-bottom">
-            <p className="text-end me-5 mb-1">₹{props.amountData.balanceDue}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Item Details Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-4">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-x-4">
         <div className="">
           <label htmlFor="Description" className="block py-2 text-gray-600">
             Item

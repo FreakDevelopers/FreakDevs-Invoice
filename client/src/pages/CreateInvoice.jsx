@@ -3,55 +3,38 @@ import { InvoiceNumber } from "invoice-number";
 import ItemDetails from "../components/ItemDetails/ItemDetails";
 import { SERVER_URL } from "../data/constants";
 import { getAxiosInstance } from "../utility/axiosApiConfig";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAmountPaid,
+  setUser,
+  setNote,
+  setInvoiceDate,
+  setInvoiceNumber,
+  setInvoiceItems,
+} from "../features/invoice/invoiceSlice";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function CreateInvoice() {
-  
-  const [invoiceNo, setInvoiceNo] = useState("");
-  // Add current date to the field instead of no value at all.
-  const [invoiceDate, setInvoiceDate] = useState(
-    new Date().toISOString().substring(0, 10)
-  );
-  const [amountTotal, setAmountTotal] = useState("");
-  const [amountPaid, setAmountPaid] = useState("");
-  const [amountDue, setAmountDue] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [customerMobile, setCustomerMobile] = useState("");
-  const [customerNote, setCustomerNote] = useState("");
-  const [itemsData, setItemsData] = useState([]);
-
-  const saveItemsDataHandler = (enteredItemData) => {
-    setItemsData((prevItems) => {
-      return [enteredItemData, ...prevItems];
-    });
-  };
-
-  const inputChangeHandler = (id, value) => {
-    if (id === "name") {
-      setCustomerName(value);
-    } else if (id === "email") {
-      setCustomerEmail(value);
-    } else if (id === "mobile") {
-      setCustomerMobile(value);
-    } else if (id === "note") {
-      setCustomerNote(value);
-    } else if (id === "date") {
-      setInvoiceDate(value);
-    } else if (id === "amountPaid") {
-      setAmountPaid(value);
-    }
-  };
-
-  const invoiceNumber = (prevInvoiceNumber) => {
-    return InvoiceNumber.next(prevInvoiceNumber);
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    invoiceNumber,
+    invoiceDate,
+    amountTotal,
+    amountPaid,
+    balanceDue,
+    user,
+    note,
+    invoiceItems,
+  } = useSelector((state) => state.invoice);
 
   const fetchData = async () => {
     await getAxiosInstance()
       .get(`${SERVER_URL}/getInvoiceNumber`, {})
       .then((res) => {
         // console.log(res.data.data);
-        setInvoiceNo(invoiceNumber(res?.data?.data));
+        dispatch(setInvoiceNumber(getInvoiceNumber(res?.data?.data)));
       })
       .catch((err) => {
         console.log(err);
@@ -62,65 +45,46 @@ function CreateInvoice() {
     fetchData();
   }, []);
 
-  const submitHandler = (event) => {
-    event.preventDefault();
+  const getInvoiceNumber = (prevInvoiceNumber) => {
+    return InvoiceNumber.next(prevInvoiceNumber);
+  };
 
+  const submitHandler = async (event) => {
+    event.preventDefault();
     const customerData = {
-      cInvoiceNumber: invoiceNo,
-      cInvoiceDate: invoiceDate,
-      cAmountTotal: amountTotal,
-      cAmountPaid: parseInt(amountPaid),
-      cAmountDue: amountDue,
-      cName: customerName,
-      cEmail: customerEmail,
-      cMobile: customerMobile,
-      cNote: customerNote,
-      cItem: [itemsData],
+      invoiceNumber,
+      invoiceDate,
+      amountTotal,
+      amountPaid: parseInt(amountPaid),
+      balanceDue,
+      user,
+      note,
+      invoiceItems,
     };
-    console.log(customerData);
-    setInvoiceDate(new Date().toISOString().substring(0, 10));
-    setAmountTotal("");
-    setAmountPaid("");
-    setAmountDue("");
-    setCustomerName("");
-    setCustomerEmail("");
-    setCustomerMobile("");
-    setCustomerNote("");
-    setItemsData([]);
+    // console.log(customerData);
+    await getAxiosInstance()
+      .post(`${SERVER_URL}/createInvoice`, customerData)
+      .then((res) => {
+        dispatch(setInvoiceDate(new Date().toISOString().substring(0, 10)));
+        dispatch(setAmountPaid(""));
+        dispatch(setUser(""));
+        dispatch(setNote(""));
+        dispatch(setInvoiceItems([]));
+        toast.success("Invoice Created Successfully");
+      })
+      .catch((err) => {
+        toast.error("Please Add Items");
+      });
   };
 
   const resetHandler = () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to clear form data?"
-    );
-    if (confirmed) {
-      setInvoiceDate(new Date().toISOString().substring(0, 10));
-      setAmountTotal("");
-      setAmountPaid("");
-      setAmountDue("");
-      setCustomerName("");
-      setCustomerEmail("");
-      setCustomerMobile("");
-      setCustomerNote("");
-      setItemsData([]);
-    }
+    dispatch(setInvoiceDate(new Date().toISOString().substring(0, 10)));
+    dispatch(setAmountPaid(""));
+    dispatch(setUser(""));
+    dispatch(setNote(""));
+    dispatch(setInvoiceItems([]));
+    navigate("/");
   };
-
-  const balanceSum = itemsData
-    .map((i) => i.amount)
-    .reduce((accumulator, current) => accumulator + current, 0);
-
-  const amountData = {
-    balanceTotal: balanceSum,
-    balancePaid: amountPaid,
-    balanceDue: balanceSum - amountPaid,
-  };
-
-  useEffect(() => {
-    balanceSum && setAmountTotal(balanceSum);
-    balanceSum && setAmountDue(balanceSum - amountPaid);
-  }, [itemsData, balanceSum]);
-  // console.log(balanceSum);
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
@@ -136,7 +100,7 @@ function CreateInvoice() {
               id="invoiceNumber"
               type="text"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-              value={invoiceNo}
+              value={invoiceNumber}
               // readOnly
               disabled
             />
@@ -150,9 +114,7 @@ function CreateInvoice() {
               type="date"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               placeholder="Date"
-              onChange={(e) => {
-                inputChangeHandler("date", e.target.value);
-              }}
+              onChange={(e) => dispatch(setInvoiceDate(e.target.value))}
               value={invoiceDate}
             />
           </div>
@@ -165,11 +127,10 @@ function CreateInvoice() {
                 id="amountPaid"
                 type="number"
                 min={0}
+                required
                 className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                placeholder="Amount Paid"
-                onChange={(e) => {
-                  inputChangeHandler("amountPaid", e.target.value);
-                }}
+                placeholder="In Rupees"
+                onChange={(e) => dispatch(setAmountPaid(e.target.value))}
                 value={amountPaid}
               />
             </div>
@@ -186,11 +147,10 @@ function CreateInvoice() {
               type="text"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               id="inputName"
+              required
               placeholder="e.g. John Doe"
-              onChange={(e) => {
-                inputChangeHandler("name", e.target.value);
-              }}
-              value={customerName}
+              onChange={(e) => dispatch(setUser(e.target.value))}
+              value={user}
             />
           </div>
 
@@ -202,11 +162,9 @@ function CreateInvoice() {
               type="email"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               id="inputEmail"
-              placeholder="Enter Email Address"
-              onChange={(e) => {
-                inputChangeHandler("email", e.target.value);
-              }}
-              value={customerEmail}
+              placeholder="e.g. john@example.com"
+              disabled
+              value={""}
             />
           </div>
 
@@ -218,21 +176,15 @@ function CreateInvoice() {
               type="text"
               className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               id="inputMobile"
-              placeholder="Enter Mobile Number"
-              onChange={(e) => {
-                inputChangeHandler("mobile", e.target.value);
-              }}
-              value={customerMobile}
+              placeholder="e.g. 98XXXXXX10"
+              disabled
+              value={""}
             />
           </div>
         </div>
 
         {/* Item Deails Table */}
-        <ItemDetails
-          onSaveItemsData={saveItemsDataHandler}
-          itemsData={itemsData}
-          amountData={amountData}
-        />
+        <ItemDetails />
 
         {/* Note section */}
         <div className="my-4">
@@ -247,10 +199,8 @@ function CreateInvoice() {
             placeholder="Leave a comment here"
             id="floatingTextarea"
             rows={5}
-            onChange={(e) => {
-              inputChangeHandler("note", e.target.value);
-            }}
-            value={customerNote}
+            onChange={(e) => dispatch(setNote(e.target.value))}
+            value={note}
           ></textarea>
         </div>
 
@@ -258,16 +208,16 @@ function CreateInvoice() {
         <div className="my-4">
           <button
             type="submit"
-            className="px-4 py-2 text-indigo-600 bg-indigo-50 rounded-lg duration-150 hover:bg-indigo-100 active:bg-indigo-200"
+            className="px-4 py-2 text-white bg-indigo-500 border rounded-lg duration-150 hover:bg-indigo-600 active:bg-indigo-200"
           >
             Submit
           </button>
           <button
             type="reset"
-            className="ml-4 px-4 py-2 text-indigo-600 bg-indigo-50 rounded-lg duration-150 hover:bg-indigo-100 active:bg-indigo-200"
+            className="ml-4 px-4 py-2 text-indigo-600 bg-indigo-50 border rounded-lg duration-150 hover:bg-indigo-100 active:bg-indigo-200"
             onClick={resetHandler}
           >
-            Reset
+            Cancel
           </button>
         </div>
       </form>

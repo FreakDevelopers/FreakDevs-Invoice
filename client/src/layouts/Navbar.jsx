@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "../features/auth/authSlice";
 
 function Navbar() {
+  const { pathname } = useLocation();
   const [state, setState] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function Navbar() {
   };
 
   const navigation = [
-    { title: "Home", path: "/" },
+    { title: "Dashboard", path: "/" },
     { title: "Create Customer", path: "/create-customer" },
     { title: "Create invoice", path: "/create-invoice" },
     { title: "Invoices", path: "/invoices" },
@@ -66,7 +67,14 @@ function Navbar() {
             {token && (
               <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                 {navigation.map((item, idx) => (
-                  <li key={idx} className="text-gray-700 hover:text-indigo-600">
+                  <li
+                    key={idx}
+                    className={`${
+                      pathname == item.path
+                        ? "bg-indigo-100 text-indigo-600"
+                        : ""
+                    } text-gray-700 border hover:text-indigo-600 hover:bg-indigo-100 px-2 py-1 rounded`}
+                  >
                     <Link
                       onClick={() => setState(!state)}
                       to={item.path}

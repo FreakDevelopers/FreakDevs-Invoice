@@ -3,19 +3,19 @@ import mongoose from "mongoose";
 const itemSchema = new mongoose.Schema({
     description: {
         type: String,
-        required: [true, 'Description is required']
+        required: true
     },
     rate: {
         type: Number,
-        required: [true, 'Rate is required']
+        required: true
     },
     quantity: {
         type: Number,
-        required: [true, 'Quantity is required']
+        required: true
     },
     amount: {
         type: Number,
-        required: [true, 'Amount is required']
+        required: true
     }
 })
 
@@ -41,7 +41,7 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    invoceItems: {
+    invoiceItems: {
         type: [itemSchema],
         required: true
     },
