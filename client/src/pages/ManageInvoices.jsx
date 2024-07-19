@@ -1,12 +1,13 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAxiosInstance } from "../utility/axiosApiConfig";
+import { SERVER_URL } from "../data/constants";
 
 function ManageInvoices() {
   const [customers, setCustomers] = useState([]);
   const fetchData = async () => {
-    await axios
-      .get("http://127.0.0.1:8000/getAllCustomers", {})
+    await getAxiosInstance()
+      .get(`${SERVER_URL}/getAllCustomers`, {})
       .then((res) => {
         const tableData = res.data.data;
         setCustomers(tableData);

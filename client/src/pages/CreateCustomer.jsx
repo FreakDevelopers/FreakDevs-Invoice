@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { states } from "../data/constants";
-import axios from "axios";
+import { SERVER_URL, states } from "../data/constants";
 import toast from "react-hot-toast";
+import { getAxiosInstance } from "../utility/axiosApiConfig";
 
 function CreateCustomer() {
   const [customerName, setCustomerName] = useState("");
@@ -58,8 +58,8 @@ function CreateCustomer() {
       userZipCode: customerZipCode,
     };
     console.log(customerData);
-    await axios
-      .post("http://127.0.0.1:8000/createCustomer", customerData)
+    await getAxiosInstance()
+      .post(`${SERVER_URL}/createCustomer`, customerData)
       .then((req) => {
         setCustomerName("");
         setCustomerEmail("");

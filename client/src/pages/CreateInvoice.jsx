@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { InvoiceNumber } from "invoice-number";
 import ItemDetails from "../components/ItemDetails/ItemDetails";
-import axios from "axios";
+import { SERVER_URL } from "../data/constants";
+import { getAxiosInstance } from "../utility/axiosApiConfig";
 
 function CreateInvoice() {
+  
   const [invoiceNo, setInvoiceNo] = useState("");
   // Add current date to the field instead of no value at all.
   const [invoiceDate, setInvoiceDate] = useState(
@@ -45,8 +47,8 @@ function CreateInvoice() {
   };
 
   const fetchData = async () => {
-    await axios
-      .get("http://127.0.0.1:8000/getInvoiceNumber", {})
+    await getAxiosInstance()
+      .get(`${SERVER_URL}/getInvoiceNumber`, {})
       .then((res) => {
         // console.log(res.data.data);
         setInvoiceNo(invoiceNumber(res?.data?.data));

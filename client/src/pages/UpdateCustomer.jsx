@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { states } from "../data/constants";
-import axios from "axios";
+import { SERVER_URL, states } from "../data/constants";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { getAxiosInstance } from "../utility/axiosApiConfig";
 
 function UpdateCustomer() {
 const { pathname } = useLocation();
@@ -35,8 +35,8 @@ const { pathname } = useLocation();
   };
 
   const fetchData = async () => {
-    await axios
-      .get(`http://127.0.0.1:8000/customer/${pathname.substring(17)}`, {})
+    await getAxiosInstance()
+      .get(`${SERVER_URL}/customer/${pathname.substring(17)}`, {})
       .then((res) => {
         const data = res.data.data;
         // console.log(data);
@@ -74,8 +74,8 @@ const { pathname } = useLocation();
       userZipCode: customerZipCode,
     };
     console.log(customerData);
-    await axios
-      .put(`http://127.0.0.1:8000/customer/${pathname.substring(17)}`, customerData)
+    await getAxiosInstance()
+      .put(`${SERVER_URL}/customer/${pathname.substring(17)}`, customerData)
       .then((req) => {
         navigate("/manage-invoices");
         toast.success("Customer Updated Successfully");

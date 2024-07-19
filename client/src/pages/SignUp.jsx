@@ -4,6 +4,7 @@ import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import { SERVER_URL } from "../data/constants";
 
 function SignUp() {
   const [username, setUserame] = useState("");
@@ -20,7 +21,7 @@ function SignUp() {
   const registerHandler = async (e) => {
     e.preventDefault();
     const response = await axios
-      .post("http://127.0.0.1:8000/signup", {
+      .post(`${SERVER_URL}/signup`, {
         username,
         password,
       })

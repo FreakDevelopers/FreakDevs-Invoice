@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../features/auth/authSlice";
+import { SERVER_URL } from "../data/constants";
 
 function Login() {
   const dispatch = useDispatch();
@@ -23,16 +24,16 @@ function Login() {
     e.preventDefault();
     // const user = ;
     const response = await axios
-      .post("http://127.0.0.1:8000/", {
+      .post(`${SERVER_URL}/login`, {
         username,
         password,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.data._id);
-        dispatch(setToken(res.data.data._id));
-        localStorage.setItem("user", res.data.data.username);
-        dispatch(setUser(res.data.data.username));
-        toast.success(res.data.message);
+        localStorage.setItem("token", res.data.data.token);
+        dispatch(setToken(res.data.data.token));
+        localStorage.setItem("user", res.data.data.admin.username);
+        dispatch(setUser(res.data.data.admin.username));
+        toast.success(res?.data?.message);
       })
       .catch((err) => {
         toast.error("Something Went Wrong..!");
