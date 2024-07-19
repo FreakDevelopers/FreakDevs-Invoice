@@ -1,8 +1,12 @@
-import bcrypt from "bcrypt"
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js"
 import { Admin } from "../models/admin.models.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken";
+
+const generateToken = admin => {
+    return jwt.sign({ admin }, process.env.JWT_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRY })
+}
 
 const registerAdmin = asyncHandler(async (req, res) => {
     const { username, password } = req.body
@@ -34,25 +38,27 @@ const registerAdmin = asyncHandler(async (req, res) => {
 })
 
 
-const getAdmin = asyncHandler(async (req, res) => {
+const loginAdmin = asyncHandler(async (req, res) => {
     const { username, password } = req.body
 
     // Find admin by username
     const admin = await Admin.findOne({ username });
     if (!admin) {
-        throw new ApiError(404, "Incorrect Username..!");
+        throw new ApiError(404, "User does not exist");
     }
 
-    // Compare the provided password with the hashed password
-    const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) {
-        throw new ApiError(404, "Incorrect Password..!");
+    const isPasswordValid = await admin.isPasswordCorrect(password)
+    if (!isPasswordValid) {
+        throw new ApiError(404, "Incorrect Password");
     }
-    admin.password = undefined;
+    admin.password = undefined
+    admin.updatedAt = undefined
+    const data = { _id: admin._id, username }
+    const token = generateToken(data)
 
     return res.status(201).json(
-        new ApiResponse(200, admin, "Login Successful..!")
+        new ApiResponse(200, { admin: data, token }, "Login Successful..!")
     )
 })
 
-export { registerAdmin, getAdmin }
+export { registerAdmin, loginAdmin }
