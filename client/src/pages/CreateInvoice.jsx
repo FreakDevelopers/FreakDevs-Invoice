@@ -11,23 +11,33 @@ import {
   setInvoiceDate,
   setInvoiceNumber,
   setInvoiceItems,
+  setAmountTotal,
 } from "../features/invoice/invoiceSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import {
+  setUserEmail,
+  setUserId,
+  setUserMobile,
+  setUserName,
+} from "../features/customer/customerSlice";
 
 function CreateInvoice() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [userSearch, setUserSearch] = useState("");
+  const [customers, setCustomers] = useState([]);
   const {
     invoiceNumber,
     invoiceDate,
     amountTotal,
     amountPaid,
     balanceDue,
-    user,
     note,
     invoiceItems,
   } = useSelector((state) => state.invoice);
+  const { _id, userEmail, userMobile } = useSelector((state) => state.customer);
 
   const fetchData = async () => {
     await getAxiosInstance()
@@ -39,14 +49,30 @@ function CreateInvoice() {
       .catch((err) => {
         console.log(err);
       });
-  };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    // Fetch All Customers
+    await getAxiosInstance()
+      .get(`${SERVER_URL}/getAllCustomers`, {})
+      .then((res) => {
+        setCustomers(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getInvoiceNumber = (prevInvoiceNumber) => {
     return InvoiceNumber.next(prevInvoiceNumber);
+  };
+
+  const setCustomerHandler = (item) => {
+    setShowDropDown(false);
+    setUserSearch(item.userName);
+    dispatch(setUser(item._id));
+    dispatch(setUserId(item._id));
+    dispatch(setUserName(item.userName));
+    dispatch(setUserEmail(item.userEmail));
+    dispatch(setUserMobile(item.userMobile));
   };
 
   const submitHandler = async (event) => {
@@ -57,19 +83,24 @@ function CreateInvoice() {
       amountTotal,
       amountPaid: parseInt(amountPaid),
       balanceDue,
-      user,
+      user: _id,
       note,
       invoiceItems,
     };
-    // console.log(customerData);
     await getAxiosInstance()
       .post(`${SERVER_URL}/createInvoice`, customerData)
       .then((res) => {
         dispatch(setInvoiceDate(new Date().toISOString().substring(0, 10)));
         dispatch(setAmountPaid(""));
+        dispatch(setAmountTotal(""));
         dispatch(setUser(""));
         dispatch(setNote(""));
         dispatch(setInvoiceItems([]));
+        setUserSearch("");
+        dispatch(setUserId(""));
+        dispatch(setUserName(""));
+        dispatch(setUserEmail(""));
+        dispatch(setUserMobile(""));
         toast.success("Invoice Created Successfully");
       })
       .catch((err) => {
@@ -83,9 +114,18 @@ function CreateInvoice() {
     dispatch(setUser(""));
     dispatch(setNote(""));
     dispatch(setInvoiceItems([]));
+    setUserSearch("");
+    dispatch(setUserId(""));
+    dispatch(setUserName(""));
+    dispatch(setUserEmail(""));
+    dispatch(setUserMobile(""));
     navigate("/");
   };
 
+  useEffect(() => {
+    console.log("Called");
+    fetchData();
+  }, []);
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <form className="" onSubmit={submitHandler}>
@@ -140,18 +180,45 @@ function CreateInvoice() {
         {/* <h6 className="mt-6">BILL TO:</h6> */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4">
           <div>
-            <label htmlFor="inputName" className="block py-2 text-gray-600">
-              Customer Name
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-              id="inputName"
-              required
-              placeholder="e.g. John Doe"
-              onChange={(e) => dispatch(setUser(e.target.value))}
-              value={user}
-            />
+            <label className="block py-2 text-gray-600">Customer Name</label>
+            <div className="relative z-10" id="dropdown-container">
+              <input
+                type="text"
+                className="w-full px-3 py-2 appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                required
+                placeholder="e.g. John Doe"
+                onFocus={() => setShowDropDown(true)}
+                onChange={(e) => setUserSearch(e.target.value)}
+                value={userSearch}
+              />
+              <div
+                className={`${
+                  showDropDown ? "block" : "hidden"
+                } absolute w-full bg-white`}
+              >
+                {/* Use map function */}
+                {userSearch.length > 1 &&
+                  customers
+                    ?.filter((item) => {
+                      return userSearch === ""
+                        ? item
+                        : item.userEmail.toLowerCase().includes(userSearch) ||
+                            item.userMobile.toString().includes(userSearch) ||
+                            item.userName.includes(userSearch) ||
+                            item.userName.toLowerCase().includes(userSearch);
+                    })
+                    .map((item, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => setCustomerHandler(item)}
+                        className="w-full px-3 py-2 mt-1 appearance-none bg-white hover:bg-indigo-100 outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                      >
+                        <p className="text-s">{item.userName}</p>
+                        <p className="text-xs font-thin">{item.userEmail}</p>
+                      </div>
+                    ))}
+              </div>
+            </div>
           </div>
 
           <div>
@@ -164,7 +231,7 @@ function CreateInvoice() {
               id="inputEmail"
               placeholder="e.g. john@example.com"
               disabled
-              value={""}
+              value={userEmail}
             />
           </div>
 
@@ -178,7 +245,7 @@ function CreateInvoice() {
               id="inputMobile"
               placeholder="e.g. 98XXXXXX10"
               disabled
-              value={""}
+              value={userMobile}
             />
           </div>
         </div>

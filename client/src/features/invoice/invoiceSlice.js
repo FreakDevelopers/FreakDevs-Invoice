@@ -31,6 +31,9 @@ const invoiceSlice = createSlice({
             state.amountPaid = parseInt(action.payload)
             state.balanceDue = state.amountTotal - state.amountPaid
         },
+        setAmountTotal: (state, action) => {
+            state.amountPaid = parseInt(action.payload)
+        },
         setInvoiceItems: (state, action) => {
             state.invoiceItems = action.payload
         },
@@ -42,6 +45,6 @@ const invoiceSlice = createSlice({
     }
 })
 
-export const { setInvoiceNumber, addInvoiceItems, setInvoiceDate, setUser, setNote, setAmountPaid, setInvoiceItems } = invoiceSlice.actions
+export const { setInvoiceNumber, addInvoiceItems, setInvoiceDate, setUser, setNote, setAmountPaid, setInvoiceItems, setAmountTotal } = invoiceSlice.actions
 
 export default invoiceSlice.reducer
