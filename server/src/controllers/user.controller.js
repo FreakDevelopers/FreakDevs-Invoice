@@ -31,7 +31,7 @@ const addUser = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const user = await User.findOne({ _id: id })
+    const user = await User.findOne({ _id: id }).populate("userInvoices")
     if (user == null) {
         throw new ApiError(404, "User not found..!")
     }

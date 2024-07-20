@@ -50,7 +50,7 @@ const getInvoiceNumber = asyncHandler(async (req, res) => {
 })
 
 const getInvoices = asyncHandler(async (req, res) => {
-    const allInvoices = await Invoice.find();
+    const allInvoices = await Invoice.find().populate("user");
 
     return res.status(201).json(
         new ApiResponse(200, allInvoices, "Found Invoices")

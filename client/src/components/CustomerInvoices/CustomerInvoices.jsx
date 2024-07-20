@@ -3,9 +3,10 @@ import { FaSearch } from "react-icons/fa";
 import { getAxiosInstance } from "../../utility/axiosApiConfig";
 import PaginationButtons from "../Utility/PaginationButtons";
 import { SERVER_URL } from "../../data/constants";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-function AllInvioces() {
+function CustomerInvoices() {
+  const { pathname } = useLocation();
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(true);
@@ -13,13 +14,23 @@ function AllInvioces() {
   const [totalPages, setTotalPages] = useState(0);
   const [invoices, setInvoices] = useState([]);
   const [tableItems, setTableItems] = useState([]);
+  const [user, setUser] = useState({
+    _id: "",
+    userName: "",
+    userEmail: "",
+  });
 
   const fetchData = async () => {
     await getAxiosInstance()
-      .get(`${SERVER_URL}/getInvoices`, {})
+      .get(`${SERVER_URL}/getCustomer/${pathname.substring(10)}`, {})
       .then((res) => {
         const data = res.data.data;
-        setTableItems(data);
+        setUser({
+          _id: data._id,
+          userName: data.userName,
+          userEmail: data.userEmail,
+        });
+        setTableItems(data.userInvoices);
         // console.log(data);
       })
       .catch((err) => {
@@ -45,9 +56,7 @@ function AllInvioces() {
         return search === ""
           ? item
           : item.invoiceNumber.includes(search) ||
-              item.amountTotal.toString().includes(search) ||
-              item?.user?.userName.toLowerCase().includes(search) ||
-              item?.user?.userEmail.toLowerCase().includes(search);
+              item.amountTotal.toString().includes(search);
       });
       setTotalPages(Math.ceil(result.length / limit));
       setInvoices(result1);
@@ -60,13 +69,18 @@ function AllInvioces() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(invoices);
+  console.log(user);
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <div className="max-w-full flex flex-wrap gap-y-4 justify-between items-center">
-        <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
-          All Invoices
-        </h3>
+        <div className="flex flex-col">
+          <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
+            {user.userName}
+          </h3>
+          <span className="uppercase text-sm">
+            Total Invoices : {tableItems.length}
+          </span>
+        </div>
 
         <form onSubmit={(e) => e.preventDefault()} className="w-96">
           <div className="flex justify-end gap-x-4">
@@ -95,6 +109,7 @@ function AllInvioces() {
           </div>
         </form>
       </div>
+
       {loading ? (
         <div className="flex justify-center items-center h-[55vh]">
           <div className="animate-spin h-16 w-16 rounded-full border-4 border-r-transparent border-indigo-500"></div>
@@ -112,44 +127,43 @@ function AllInvioces() {
               </tr>
             </thead>
             <tbody className="text-gray-600 divide-y">
-              {invoices
-                .map((item, idx) => (
-                  <tr key={idx} className="divide-x">
-                    <td className="px-6 py-4 whitespace-nowrap flex items-center gap-x-6">
-                      <span>{idx + 1}</span>
-                      {item.invoiceNumber}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {item.invoiceDate
-                        .substring(0, 10)
-                        .split("-")
-                        .reverse()
-                        .join("-")}
-                      {/* {item.invoiceDate} */}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {item.user.userName}
-                      <p className="text-sm"> {item.user.userEmail}</p>
-                    </td>
-                    <td className="px-6 py-4 text-center whitespace-nowrap">
-                      ₹{item.amountTotal}
-                    </td>
-                    <td className="text-center space-x-3 whitespace-nowrap">
-                      <Link
-                        to="/invoices"
-                        className="py-2 px-3 border font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-md"
-                      >
-                        Preview
-                      </Link>
-                      <Link
-                        to={`/invoices`}
-                        className="py-2 leading-none border px-3 font-medium text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-md"
-                      >
-                        Download
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+              {invoices.map((item, idx) => (
+                <tr key={idx} className="divide-x">
+                  <td className="px-6 py-4 whitespace-nowrap flex items-center gap-x-6">
+                    <span>{idx + 1}</span>
+                    {item.invoiceNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.invoiceDate
+                      .substring(0, 10)
+                      .split("-")
+                      .reverse()
+                      .join("-")}
+                    {/* {item.invoiceDate} */}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {user.userName}
+                    <p className="text-sm"> {user.userEmail}</p>
+                  </td>
+                  <td className="px-6 py-4 text-center whitespace-nowrap">
+                    ₹{item.amountTotal}
+                  </td>
+                  <td className="text-center space-x-3 whitespace-nowrap">
+                    <Link
+                      to={`/customer/${user._id}/${item._id}`}
+                      className="py-2 px-3 border font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-md"
+                    >
+                      Preview
+                    </Link>
+                    <button
+                      onClick={() => history.back()}
+                      className="py-2 leading-none border px-3 font-medium text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-md"
+                    >
+                      Download
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -164,4 +178,4 @@ function AllInvioces() {
   );
 }
 
-export default AllInvioces;
+export default CustomerInvoices;

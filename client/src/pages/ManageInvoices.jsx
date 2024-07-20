@@ -65,7 +65,7 @@ function ManageInvoices() {
                 </td>
                 <td className="text-center space-x-3 px-6 whitespace-nowrap">
                   <Link
-                    to="/manage-invoices"
+                    to={`/customer/${item._id}`}
                     className="py-2 px-3 border font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-md"
                   >
                     View Invoices
