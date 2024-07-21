@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap"); */
 
 /* Reset */
 * {
@@ -7,13 +7,7 @@
   box-sizing: border-box;
 }
 
-html,
+/* html,
 body {
   font-family: "Inter", sans-serif;
-}
-
-@media print {
-  .non-printable {
-    display: none !important;
-  }
-}
+} */
