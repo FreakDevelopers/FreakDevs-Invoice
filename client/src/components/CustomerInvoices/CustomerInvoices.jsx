@@ -3,10 +3,13 @@ import { FaSearch } from "react-icons/fa";
 import { getAxiosInstance } from "../../utility/axiosApiConfig";
 import PaginationButtons from "../Utility/PaginationButtons";
 import { SERVER_URL } from "../../data/constants";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { createPortal } from "react-dom";
+import InvoicePreviewModal from "../InvoicePreview/InvoicePreviewModal";
 
 function CustomerInvoices() {
   const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(true);
@@ -18,7 +21,17 @@ function CustomerInvoices() {
     _id: "",
     userName: "",
     userEmail: "",
+    userMobile: "",
+    userAddress: "",
+    userCity: "",
+    userState: "",
+    userZipCode: "",
   });
+  const [data, setData] = useState({});
+  const invoicePreviewHandler = (id) => {
+    let res = tableItems.filter((item) => item._id == id);
+    setData(res[0]);
+  };
 
   const fetchData = async () => {
     await getAxiosInstance()
@@ -29,9 +42,13 @@ function CustomerInvoices() {
           _id: data._id,
           userName: data.userName,
           userEmail: data.userEmail,
+          userMobile: data.userMobile,
+          userAddress: data.userAddress,
+          userCity: data.userCity,
+          userState: data.userState,
+          userZipCode: data.userZipCode,
         });
         setTableItems(data.userInvoices);
-        // console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -69,9 +86,18 @@ function CustomerInvoices() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(user);
+  //   console.log(user);
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+      {createPortal(
+        <InvoicePreviewModal
+          open={open}
+          user={user}
+          data={data}
+          onClose={() => setOpen(false)}
+        />,
+        document.querySelector("#modal")
+      )}
       <div className="max-w-full flex flex-wrap gap-y-4 justify-between items-center">
         <div className="flex flex-col">
           <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
@@ -129,11 +155,11 @@ function CustomerInvoices() {
             <tbody className="text-gray-600 divide-y">
               {invoices.map((item, idx) => (
                 <tr key={idx} className="divide-x">
-                  <td className="px-6 py-4 whitespace-nowrap flex items-center gap-x-6">
+                  <td className="px-6 py-3 whitespace-nowrap flex items-center gap-x-6">
                     <span>{idx + 1}</span>
                     {item.invoiceNumber}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-3 whitespace-nowrap">
                     {item.invoiceDate
                       .substring(0, 10)
                       .split("-")
@@ -141,20 +167,24 @@ function CustomerInvoices() {
                       .join("-")}
                     {/* {item.invoiceDate} */}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-3 whitespace-nowrap">
                     {user.userName}
                     <p className="text-sm"> {user.userEmail}</p>
                   </td>
-                  <td className="px-6 py-4 text-center whitespace-nowrap">
+                  <td className="px-6 py-3 text-center whitespace-nowrap">
                     ₹{item.amountTotal}
                   </td>
                   <td className="text-center space-x-3 whitespace-nowrap">
-                    <Link
-                      to={`/customer/${user._id}/${item._id}`}
+                    <button
+                      //   to={`/customer/${user._id}/${item._id}`}
+                      onClick={() => {
+                        invoicePreviewHandler(item._id);
+                        setOpen(true);
+                      }}
                       className="py-2 px-3 border font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-md"
                     >
                       Preview
-                    </Link>
+                    </button>
                     <button
                       onClick={() => history.back()}
                       className="py-2 leading-none border px-3 font-medium text-green-500 hover:text-green-600 duration-150 hover:bg-gray-50 rounded-md"

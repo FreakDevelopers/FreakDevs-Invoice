@@ -2,8 +2,7 @@ import React from "react";
 import logo from "../../assets/logo.png";
 import "./InvoicePreview.css";
 
-
-function NewInvoice() {
+function NewInvoice({ data, user }) {
   return (
     <div className="invoice_container">
       <div className="header">
@@ -27,12 +26,12 @@ function NewInvoice() {
         </div>
         <div className="invoice_no">
           <b>INVOICE</b>
-          <p>INV0003</p>
+          <p>{data?.invoiceNumber}</p>
           {/* <p>INV0001</p> */}
           <b>DATE</b>
-          <p>Dec 19, 2023</p>
+          <p>{data?.invoiceDate?.substring(0, 10)}</p>
           <b>BALANCE DUE</b>
-          <p>INR ₹950.00</p>
+          <p>INR ₹{data?.balanceDue}</p>
         </div>
       </div>
       <hr />
@@ -40,13 +39,18 @@ function NewInvoice() {
         <div className="customer_info">
           <p>BILL TO</p>
           <p>
-            <b>Amrut Gawade</b>
+            <b>{user?.userName}</b>
           </p>
-          <p>Banda, Sawantwadi, Sindhudurg</p>
-          <p>Maharashtra</p>
-          <p>416514</p>
-          <p>7741941681</p>
-          <p>webdeveloper.amrut@gmail.com</p>
+          <p>{user?.userAddress}</p>
+          <p>
+            {user?.userCity +
+              ", " +
+              user?.userState +
+              " - " +
+              user?.userZipCode}
+          </p>
+          <p>{user?.userMobile}</p>
+          <p>{user?.userEmail}</p>
         </div>
       </div>
       <hr />
@@ -63,27 +67,15 @@ function NewInvoice() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Hosting</td>
-                <td>₹500</td>
-                <td>1</td>
-                <td>₹500</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Domain</td>
-                <td>₹1000</td>
-                <td>1</td>
-                <td>₹1000</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Website</td>
-                <td>15000</td>
-                <td>1</td>
-                <td>15000</td>
-              </tr>
+              {data?.invoiceItems?.map((item, idx) => (
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>{item.description}</td>
+                  <td>₹{item.rate}</td>
+                  <td>{item.quantity}</td>
+                  <td>₹{item.amount}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -93,7 +85,7 @@ function NewInvoice() {
               <p>TOTAL</p>
             </div>
             <div className="w-24">
-              <p>₹950</p>
+              <p>₹{data?.amountTotal}</p>
             </div>
           </div>
           <div className="total">
@@ -101,30 +93,23 @@ function NewInvoice() {
               <p>BALANCE PAID</p>
             </div>
             <div className="w-24">
-              <p>₹2000</p>
+              <p>₹{data?.amountPaid}</p>
+            </div>
+          </div>
+          <div className="total">
+            <div className="w-76">
+              <p>BALANCE DUE</p>
+            </div>
+            <div className="w-24">
+              <p>₹{data?.balanceDue}</p>
             </div>
           </div>
         </div>
       </div>
       <div className="section-4">
         <b>NOTE</b>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-          incidunt facere ullam enim voluptatum. Fugiat, perspiciatis quia.
-          Dolorum, obcaecati adipisci.
-        </p>
+        <p>{data?.note}</p>
       </div>
-      {/* <Link className="btn-custom non-printable" to={"/"}>
-        Back
-      </Link> */}
-      <button
-        type="button"
-        className="btn-custom btn-red non-printable"
-        id="print"
-        onClick={window.print}
-      >
-        Print
-      </button>
     </div>
   );
 }
