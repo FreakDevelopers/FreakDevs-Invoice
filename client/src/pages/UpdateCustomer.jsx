@@ -36,7 +36,7 @@ const { pathname } = useLocation();
 
   const fetchData = async () => {
     await getAxiosInstance()
-      .get(`${SERVER_URL}/customer/${pathname.substring(17)}`, {})
+      .get(`${SERVER_URL}/getCustomer/${pathname.substring(17)}`, {})
       .then((res) => {
         const data = res.data.data;
         // console.log(data);
@@ -53,9 +53,7 @@ const { pathname } = useLocation();
       });
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+
 
   const resetHandler = () => {
     navigate("/manage-invoices")
@@ -73,7 +71,7 @@ const { pathname } = useLocation();
       userState: customerState,
       userZipCode: customerZipCode,
     };
-    console.log(customerData);
+    // console.log(customerData);
     await getAxiosInstance()
       .put(`${SERVER_URL}/customer/${pathname.substring(17)}`, customerData)
       .then((req) => {
@@ -84,6 +82,10 @@ const { pathname } = useLocation();
         toast.error("Customer already exist with that email");
       });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <form className="" onSubmit={updateCustomerHandler}>
