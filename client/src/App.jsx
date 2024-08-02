@@ -14,7 +14,7 @@ import Reset from "./pages/Reset";
 import SignUp from "./pages/SignUp";
 import CreateCustomer from "./pages/CreateCustomer";
 import { useSelector } from "react-redux";
-import UpdateCustomer from "./pages/updateCustomer";
+import UpdateCustomer from "./pages/UpdateCustomer";
 import CustomerInvoices from "./components/CustomerInvoices/CustomerInvoices";
 
 function App() {
